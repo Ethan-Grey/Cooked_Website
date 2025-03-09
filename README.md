@@ -1,0 +1,1 @@
+You have been tasked with developing an interactive website dedicated to culinary enthusiasts, using the Django web framework. This platform will serve as a comprehensive repository for various recipes, catering to different dietary preferences and occasions
