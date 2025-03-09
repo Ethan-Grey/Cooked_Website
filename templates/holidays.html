@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+
+{% block title %}Home - Cooking App{% endblock %}
+
+{% block content %}
+<div class="text-center py-5">
+    <h1>Holidays</h1>
+    <p>Discover delicious recipes and improve your cooking skills!</p>
+    <a href="/recipes" class="btn btn-primary">Explore Recipes</a>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4">
+        <div class="card">
+            <img src="" class="card-img-top" alt="Recipe 1">
+            <div class="card-body">
+                <h5 class="card-title">Easy Breakfast</h5>
+                <p class="card-text">Start your day with a healthy breakfast.</p>
+                <a href="/recipes/breakfast" class="btn btn-secondary">View More</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <img src="" class="card-img-top" alt="Recipe 2">
+            <div class="card-body">
+                <h5 class="card-title">Quick Lunch</h5>
+                <p class="card-text">Delicious and easy lunch recipes.</p>
+                <a href="/recipes/lunch" class="btn btn-secondary">View More</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <img src="" class="card-img-top" alt="Recipe 3">
+            <div class="card-body">
+                <h5 class="card-title">Dinner Delights</h5>
+                <p class="card-text">Tasty dinners for the whole family.</p>
+                <a href="/recipes/dinner" class="btn btn-secondary">View More</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
