@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+
+{% block title %}Daily Recipes{% endblock %}
+
+{% block content %}
+<div class="text-center py-5">
+    <h1>Breakfast</h1>
+    <p>Discover delicious recipes and improve your cooking skills!</p>
+    <a href="/recipes" class="btn btn-primary">Explore Recipes</a>
+</div>
+
+<div class="featured-recipes">
+    <h1>Breakfast Recipes</h1>
+    <ul>
+        {% for recipe in breakfast_recipes %}
+            <li>
+                <h4>{{ recipe.recipename }}</h4>
+                <p>{{ recipe.description }}</p>
+                <p><strong>Ingredients:</strong> {{ recipe.ingredients }}</p>
+                <p><strong>Instructions:</strong> {{ recipe.instructions }}</p>
+                {% if recipe.image %}
+                    <img src="{{ recipe.image.url }}" alt="{{ recipe.recipename }}">
+                {% endif %}
+            </li>
+        {% empty %}
+            <p>No breakfast recipes available.</p>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}
