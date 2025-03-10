@@ -11,8 +11,9 @@ class RecipeType(models.Model):
 class Recipe(models.Model):
     recipename = models.CharField(max_length=200)
     description = models.TextField() 
-    instructions = models.TextField(default='No instructions provided')
     ingredients = models.TextField() 
+    instructions = models.TextField(default='No instructions provided')
+    madeby = models.CharField(max_length=50, default='Firstname Lastname')
     image = models.ImageField(upload_to='recipes/') 
     slug = models.SlugField()
     recipetype = models.ForeignKey(RecipeType, related_name='recipes', on_delete=models.CASCADE) 

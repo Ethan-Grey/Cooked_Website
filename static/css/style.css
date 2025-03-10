@@ -5,12 +5,26 @@ body {
     font-family: Arial, sans-serif;
 }
 
+#hero {
+    background-image: url("../images/Background.png");
+    background-size: cover;  /* Ensures the image covers the hero section */
+    background-position: center center;  /* Centers the image */
+    height: 100vh;  /* Makes the hero section take up the full viewport height */
+    width: 100%;  /* Ensures the hero section takes up full width */
+}
+
 /* Navbar */
 .navbar {
-    background-color: #8d775f !important;
+    background: rgba(0, 0, 0, 0);  /* Semi-transparent black background for better contrast */
+    position: absolute;  /* Position navbar over the hero section */
+    top: 0;  /* Keeps navbar at the top */
+    left: 0;  /* Ensures the navbar spans the full width */
+    width: 100%;  /* Ensures the navbar spans the full width */
+    padding: 15px 0;  /* Adds padding to the navbar for better visual spacing */
 }
+
 .navbar-brand, .nav-link {
-    color: #f5f1e6 !important;
+    color: #5a4d41 !important;
 }
 .navbar-toggler {
     border-color: #f5f1e6;
@@ -85,11 +99,6 @@ footer {
     padding-top: 140px;
     padding-bottom: 140px;
 }
-
-#hero{
-    background-position: center;
-    background-size: cover;
-    }
 
     @keyframes starAnimation {
         0% { opacity: 0; }
