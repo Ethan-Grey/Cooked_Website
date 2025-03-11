@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+
+{% block title %}User Login{% endblock %}
+
+{% block content %}
+<section class="section-padding">
+    <div class="row">
+        <div class="containe ps-5">
+            <h1>Login</h1>
+            <form class="" action="/users/login/" method="post">
+                {% csrf_token %}
+                {{ form }}
+                {% if request.GET.next %}
+                    <input type="hidden" name="next" value={{ request.GET.next }}>
+                {% endif %}
+                <button>Submit</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -12,7 +12,7 @@
         <div class="col-12">
           <h1 data-aos="fade-right" data-asos-delay="150" class="text-uppercase fw-semibold display-1">Welcome to Cooked</h1>
           <h3 class="mt-3 mb-4" data-aos="fade-left" data-aos-delay="150">
-            Discover delicious recipes and improve your cooking skills!
+            Explore delicious recipes and improve your cooking skills!
           </h3>
           <a href="shop.html" class="btn btn-secondary" >Explore Recipes</a>
         </div>
@@ -20,8 +20,227 @@
     </div>
 </section>
 
+
+
+
+<!-- Featured Recipes Section -->
+<div class="container">
+    <section class="section-padding">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-title mb-5 pb-5">
+                        <h1 class="display-4 fw-semibold">Featured Recipes</h1>
+                        <div class="line"></div>
+                        <p>Discover the best recipes that bring family and friends together, with fresh ingredients and easy-to-follow steps.</p>
+                    </div>
+                </div>
+            </div> 
+        <div class="row justify-content-center">  <!-- Center the row -->
+            {% for recipe in recipes %}
+            <div class="col-lg-3 col-md-6 d-flex justify-content-center">
+                <div class="card">
+                    <img src="{{ recipe.image.url }}" class="card-img-top card-image-size" alt="{{ recipe.recipename }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ recipe.recipename }}</h5>
+                        <p class="card-text">{{ recipe.description|truncatewords:20 }}</p>
+                        <div class="five-star-rating svelte-1n6w264">
+                            <!-- First Star -->
+                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                        
+                            <!-- Second Star -->
+                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                        
+                            <!-- Third Star -->
+                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                        
+                            <!-- Fourth Star -->
+                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                        
+                            <!-- Fifth Star -->
+                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted card-title">By {{ recipe.madeby }}</small>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col">
+                <p>No featured recipes available.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+
+
+<!-- Community Feedback Section -->
+<section class="section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-title mb-5 pb-5">
+                    <h1 class="display-4 fw-semibold">Community Feedback</h1>
+                    <div class="line"></div>
+                    <p>Discover the best recipes that bring family and friends together, with fresh ingredients and easy-to-follow steps.</p>
+                </div>
+            </div>
+        </div> 
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">-John Doe</h5>
+                        <p class="card-text">"The recipes on this site are incredible! Easy to follow and always turn out perfectly every time"</p>
+                        <div class="five-star-rating svelte-1n6w264">
+                            <!-- First Star -->
+                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                        
+                            <!-- Second Star -->
+                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                        
+                            <!-- Third Star -->
+                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                        
+                            <!-- Fourth Star -->
+                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                        
+                            <!-- Fifth Star -->
+                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">-Sarah Thomson</h5>
+                        <p class="card-text">"Delicious bacon and eggs! A classic breakfast, simple and quick, and always a perfect way to start the day"</p>
+                        <div class="five-star-rating svelte-1n6w264">
+                            <!-- First Star -->
+                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                        
+                            <!-- Second Star -->
+                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                        
+                            <!-- Third Star -->
+                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                        
+                            <!-- Fourth Star -->
+                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                        
+                            <!-- Fifth Star -->
+                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">-Jane Smith</h5>
+                        <p class="card-text">"Clear instructions make this site great! As a beginner, I can easily follow and cook perfect meals."</p>
+                        <div class="five-star-rating svelte-1n6w264">
+                            <!-- First Star -->
+                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                        
+                            <!-- Second Star -->
+                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                        
+                            <!-- Third Star -->
+                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                        
+                            <!-- Fourth Star -->
+                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                        
+                            <!-- Fifth Star -->
+                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">-Robert Johnson</h5>
+                        <p class="card-text">"The variety of recipes caters to everyone. Whether you're vegan or gluten-free."</p>
+                        <div class="five-star-rating svelte-1n6w264">
+                            <!-- First Star -->
+                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                        
+                            <!-- Second Star -->
+                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                        
+                            <!-- Third Star -->
+                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                        
+                            <!-- Fourth Star -->
+                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                        
+                            <!-- Fifth Star -->
+                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
 <!-- Chef's Special Video Section -->
-<section id="carousel">
+<section id="carousel section-padding">
     <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner ">
             <div class="carousel-item active">
@@ -38,141 +257,6 @@
             </div>
             <div class="carousel-item">
                 <div class="container" style="background-color: rgba(0,0,0,0);">
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Featured Recipes Section -->
-<section class="section-padding">
-    <h2 class="mb-4">Featured Recipes</h2>
-    <div class="row">
-        {% for recipe in featured_recipes %}
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.title }}">
-                <div class="card-body">
-                    <h5 class="card-title">{{ recipe.title }}</h5>
-                    <p class="card-text">{{ recipe.description|truncatewords:20 }}</p>
-                    <a href="{% url 'recipe_detail' recipe.id %}" class="btn btn-primary">View Recipe</a>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">By {{ recipe.author.username }}</small>
-                </div>
-            </div>
-        </div>
-        {% empty %}
-        <div class="col">
-            <p>No featured recipes available.</p>
-        </div>
-        {% endfor %}
-    </div>
-</section>
-
-<!-- Community Feedback Section -->
-<section class="section-padding my-5">
-    <h1 class="mb-5">Fresh from our community</h1>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">John Doe</h5>
-                    <p class="card-text">"The recipes on this site are amazing! I've tried several and they've all turned out perfectly."</p>
-                    <div class="five-star-rating svelte-1n6w264">
-                        <!-- First Star -->
-                        <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                        </svg>
-                    
-                        <!-- Second Star -->
-                        <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                        </svg>
-                    
-                        <!-- Third Star -->
-                        <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                        </svg>
-                    
-                        <!-- Fourth Star -->
-                        <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                        </svg>
-                    
-                        <!-- Fifth Star -->
-                        <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Jane Smith</h5>
-                    <p class="card-text">"I love how detailed the instructions are. Even as a beginner cook, I can follow along easily."</p>
-                    <div class="five-star-rating svelte-1n6w264">
-                        <!-- First Star -->
-                        <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                        </svg>
-                    
-                        <!-- Second Star -->
-                        <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                        </svg>
-                    
-                        <!-- Third Star -->
-                        <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                        </svg>
-                    
-                        <!-- Fourth Star -->
-                        <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                        </svg>
-                    
-                        <!-- Fifth Star -->
-                        <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Robert Johnson</h5>
-                    <p class="card-text">"The variety of recipes is impressive. There's something for every taste and dietary need."</p>
-                    <div class="five-star-rating svelte-1n6w264">
-                        <!-- First Star -->
-                        <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                        </svg>
-                    
-                        <!-- Second Star -->
-                        <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                        </svg>
-                    
-                        <!-- Third Star -->
-                        <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                        </svg>
-                    
-                        <!-- Fourth Star -->
-                        <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                        </svg>
-                    
-                        <!-- Fifth Star -->
-                        <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                        </svg>
-                    </div>
                 </div>
             </div>
         </div>

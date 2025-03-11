@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+
+{% block title %}Register user{% endblock %}
+
+{% block content %}
+<section class="section-padding">
+    <div class="row">
+        <div class="containe ps-5">
+            <h1>Register user</h1>
+            <form class="" action="/users/register/" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <button>Submit</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

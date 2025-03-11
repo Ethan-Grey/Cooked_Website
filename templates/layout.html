@@ -22,32 +22,53 @@
                 <a class="nav-link active" aria-current="page" href="/" style="font-size: 1.4rem;">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/diet" style="font-size: 1.4rem;">Health & Diet</a>
+                <a class="nav-link ms-3" href="/diet" style="font-size: 1.4rem;">Health & Diet</a>
               </li>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/holidays" style="font-size: 1.4rem;">Holidays</a>
+              <a class="nav-link ms-3" href="/holidays" style="font-size: 1.4rem;">Holidays</a>
             </li>
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 1.4rem;">
+                <a class="nav-link dropdown-toggle ms-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 1.4rem;">
                   Daily Recipes
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="/recipes/breakfast">Breakfast</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Lunch</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Dinner</a></li>
+                  {% for type in recipe_types %}
+                    <li><a class="dropdown-item" href="/recipes/{{type.recipetype|lower}}">{{ type.recipetype }}</a></li>
+                    {% if not forloop.last %}
+                    {% endif %}
+                  {% endfor %}
                 </ul>
               </li>
             </ul>
             <form class="d-flex" role="search">
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-secondary" type="submit">Search</button>
+              <button class="btn btn-secondary me-5" type="submit">Search</button>
             </form>
+
+            <div class="dropdown">
+              <a class="nav-link me-4" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                </svg>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                {% if request.user.is_authenticated %}
+                  <li><a class="dropdown-item" href="/users/logout/" aria-label="logout">Logout</a></li>
+                  <li><a class="dropdown-item" href="/recipes/new-recipes" aria-label="My recipes">My Recipes</a></li>
+                {% else %}
+                  <li><a class="dropdown-item" href="/users/register/" aria-label="register">Register</a></li>
+                  <li><a class="dropdown-item" href="/users/login/" aria-label="login">Login</a></li>
+                {% endif %}
+              </ul>
+            </div>
           </div>
         </div>
     </nav>
+
+    
+    
 
     {% block content %}
     {% endblock %}
