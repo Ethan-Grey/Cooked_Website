@@ -146,27 +146,12 @@
   <i class="bi bi-arrow-up"></i>
 </button>
 
-<script>
-  // Back to Top Button functionality
-  const backToTopBtn = document.getElementById('backToTopBtn');
-  
-  // Show/hide button based on scroll position
-  window.onscroll = function() {
-    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-      backToTopBtn.style.display = 'block';
-    } else {
-      backToTopBtn.style.display = 'none';
-    }
-  };
-  
-  // Scroll to top when button is clicked
-  backToTopBtn.addEventListener('click', function() {
-    // For Safari
-    document.body.scrollTop = 0;
-    // For Chrome, Firefox, IE, and Opera
-    document.documentElement.scrollTop = 0;
-  });
-</script>
+<button id="backToTopBtn" class="btn btn-secondary rounded-circle position-fixed" style="bottom: 30px; right: 30px; width: 50px; height: 50px; display: none; z-index: 1000;">
+  <i class="bi bi-arrow-up"></i>
+</button>
+
+<!-- Add this script tag to load your JS file -->
+<script src="{% static 'js/backToTop.js' %}"></script>
 </body>
 </html>
 
