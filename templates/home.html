@@ -24,20 +24,20 @@
 
 
 <!-- Featured Recipes Section -->
-<div class="container">
+<div class="container section-padding">
     <section class="section-padding">
             <div class="row">
-                <div class="col-12">
-                    <div class="section-title mb-5 pb-5">
+                <div class="col-12 mb-1">
+                    <div class="section-title pb-5">
                         <h1 class="display-4 fw-semibold">Featured Recipes</h1>
                         <div class="line"></div>
                         <p>Discover the best recipes that bring family and friends together, with fresh ingredients and easy-to-follow steps.</p>
                     </div>
                 </div>
             </div> 
-        <div class="row justify-content-center">  <!-- Center the row -->
+        <div class="row">  <!-- Center the row -->
             {% for recipe in recipes %}
-            <div class="col-lg-3 col-md-6 d-flex justify-content-center">
+            <div class="col-lg-3 col-md-6 d-flex justify-content-center mt-4">
                 <div class="card">
                     <img src="{{ recipe.image.url }}" class="card-img-top card-image-size" alt="{{ recipe.recipename }}">
                     <div class="card-body">
@@ -86,7 +86,7 @@
 
 
 <!-- Community Feedback Section -->
-<section class="section-padding">
+<section id="community-feedback">
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -240,23 +240,32 @@
 
 
 <!-- Chef's Special Video Section -->
-<section id="carousel section-padding">
-    <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner ">
-            <div class="carousel-item active">
-                <iframe width="1000" height="600" 
-                    src="https://www.youtube.com/embed/wLL8H_h_nvs?autoplay=1" 
-                    title="YouTube video player" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen>
-                </iframe>
-            </div>
-            <div class="carousel-item">
-                <video src="images/" class="d-block w-100" alt="about us" type="video/mp4" autoplay loop muted>
-            </div>
-            <div class="carousel-item">
-                <div class="container" style="background-color: rgba(0,0,0,0);">
+
+<section id="chefs-video" class="section-padding">
+    <div class="container">
+        <div class="border-0 shadow-lg p-3">
+            <div class="row align-items-center">
+                <!-- Video Section (Left - 3/5 width) -->
+                <div class="col-md-7">
+                    <div class="ratio ratio-16x9">
+                        <iframe 
+                            src="https://www.youtube.com/embed/wLL8H_h_nvs?autoplay=1" 
+                            title="YouTube video player" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- Text Section (Right - 2/5 width) -->
+                <div class="col-md-5">
+                    <h2 class="fw-bold">Meet Our Chefs</h2>
+                    <p class="">
+                        Discover the passion behind our dishes. Our chefs bring years of experience 
+                        and creativity to craft unique flavors for every meal.
+                    </p>
+                    <button class="btn btn-secondary">Learn More</button>
                 </div>
             </div>
         </div>

@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %}
     My Recipes
@@ -7,15 +8,25 @@
 {% block content %}
     <section class="section-padding ps-5">
         <div class="row">
-            <div class="container">
-                <h1>New recipe</h1>
-                <form class="" action="{% url 'recipes:new_recipes' %}" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{ form }}
-                    <button class="">
-                        Add recipe
-                    </button>
-                </form>
+            <div class="container mt-5"  style="width: 1000px;">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="section-title mb-5 pb-5 text-center">
+                            <h1 class="display-4 fw-semibold">New recipe</h1>
+                            <div class="line"></div>
+                            <p>Create your own recipes that will bring family and friends together, with fresh ingredients and easy-to-follow steps.</p>
+                        </div>
+                    </div>
+                </div> 
+                <div class="container">
+                    <form class="" action="{% url 'recipes:new_recipes' %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form | crispy }}
+                        <button class="btn btn-secondary">
+                            Add recipe
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </section>

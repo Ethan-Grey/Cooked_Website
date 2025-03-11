@@ -1,17 +1,28 @@
 {% extends 'layout.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %}Register user{% endblock %}
 
 {% block content %}
 <section class="section-padding">
     <div class="row">
-        <div class="containe ps-5">
-            <h1>Register user</h1>
-            <form class="" action="/users/register/" method="post">
-                {% csrf_token %}
-                {{ form }}
-                <button>Submit</button>
-            </form>
+        <div class="container mt-5" style="width: 500px;" >
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-title mb-5 pb-5 text-center">
+                        <h1 class="display-4 fw-semibold">Register</h1>
+                        <div class="line"></div>
+                        <p>Discover the best recipes that bring family and friends together, with fresh ingredients and easy-to-follow steps.</p>
+                    </div>
+                </div>
+            </div> 
+            <div class="">
+                <form class="" action="/users/register/" method="post">
+                    {% csrf_token %}
+                    {{ form | crispy}}
+                    <div class="btn btn-secondary" style="width: 5rem;">Submit</div>
+                </form>
+            </div>
         </div>
     </div>
 </section>
