@@ -19,27 +19,51 @@
           </button>
           <div class="collapse navbar-collapse ps-5 ms-5" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="/" style="font-size: 1.3rem;">Home</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link ms-3" href="/diet" style="font-size: 1.3rem;">Health & Diet</a>
+
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle ms-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 1.3rem;">
+                  Health & Diet
+                </a>
+                <ul class="dropdown-menu">
+                  {% for type in health_filtered_recipe_types %}
+                    <li><a class="dropdown-item" href="{% url 'recipes:category' category=type.recipetype|lower %}">{{ type.recipetype }}</a></li>
+                  {% endfor %}
+                </ul>
               </li>
             </li>
-            <li class="nav-item">
-              <a class="nav-link ms-3" href="/holidays" style="font-size: 1.3rem;">Holidays</a>
+
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle ms-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 1.3rem;">
+                Holidays
+              </a>
+              <ul class="dropdown-menu">
+                {% for type in holidays_filtered_recipe_types %}
+                  <li><a class="dropdown-item" href="{% url 'recipes:category' category=type.recipetype|lower %}">{{ type.recipetype }}</a></li>
+                {% endfor %}
+              </ul>
             </li>
+
+
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle ms-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 1.3rem;">
                   Daily Recipes
                 </a>
                 <ul class="dropdown-menu">
-                  {% for type in recipe_types %}
+                  {% for type in filtered_recipe_types %}
                     <li><a class="dropdown-item" href="{% url 'recipes:category' category=type.recipetype|lower %}">{{ type.recipetype }}</a></li>
                   {% endfor %}
                 </ul>
               </li>
             </ul>
+
+
             <form class="d-flex" role="search">
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
               <button class="btn btn-secondary me-5" type="submit">Search</button>
@@ -65,10 +89,16 @@
           </div>
         </div>
     </nav>
+
+
     <div class="d-flex flex-column min-vh-100">
+
       {% block content %}
       {% endblock %}
+      
     </div>
+
+    
 
     <footer class="py-4 mt-5 border-top">
       <div class="container">

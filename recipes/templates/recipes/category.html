@@ -22,8 +22,8 @@
 <div class="container">
     <div class="row">
         {% for recipe in category_recipes %}
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 shadow">
+            <div class="col-md-3 mb-4">
+                <div class="card products h-100 shadow">
                     {% if recipe.image %}
                         <a href="{% url 'recipes:detail' category=category.recipetype|lower slug=recipe.slug %}">
                             <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.recipename }}" style="height: 250px; object-fit: cover;">

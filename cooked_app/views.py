@@ -8,3 +8,6 @@ def diet(request):
 
 def holidays(request):
     return render(request, 'holidays.html')
+
+def about_us(request):
+    return render(request, 'aboutus.html')

@@ -72,6 +72,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'recipes.context_processors.recipe_types',
                 'recipes.context_processors.recipes',
+                'recipes.context_processors.recipe_categories',
             ],
         },
     },

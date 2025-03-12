@@ -5,3 +5,16 @@ def recipe_types(request):
 
 def recipes(request):
     return {'recipes': Recipe.objects.all()}
+
+def recipe_categories(request):
+    return {
+        'filtered_recipe_types': RecipeType.objects.filter(
+            recipetype__in=['Breakfast', 'Lunch', 'Dinner']     
+        ),
+        'health_filtered_recipe_types': RecipeType.objects.filter(          # filter for categories in recipetype model
+            recipetype__in=["Keto", 'Vegetarian']
+        ),
+        'holidays_filtered_recipe_types': RecipeType.objects.filter(
+            recipetype__in=["Mother's Day", 'New Years']
+        ),
+    }

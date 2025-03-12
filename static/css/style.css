@@ -168,3 +168,39 @@ footer {
         margin: 10px 0;
     }
 }
+
+.products {
+    position: relative;
+    overflow: hidden;
+    z-index: 2;
+    width: 300px;
+    height: 330px;
+    margin: 15px;
+    background-size: cover;
+    background-position: center;
+    transition: var(--transition);
+}
+.products::after{
+    content: "";
+    width: 100%;
+    height: 100%;
+    background: rgba(var(--c-brand-rgb), 0.1);
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    transition: var(--transition);
+}
+.products:hover::after{
+    width: 100%;
+    height: 100%;
+    background: var(--c-light-oak) no-repeat center center / cover;
+    z-index: -1;
+}
+.products:hover h4,
+.products:hover p,
+.products:hover .btn{
+    color: var(--c-tan);
+}
+.products:hover .btn-brand{
+    background:rgba(0,0,0,0.00);
+}

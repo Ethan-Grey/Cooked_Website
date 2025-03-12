@@ -39,7 +39,7 @@
                 <div class="row">
                     {% for recipe in recipes|slice:":4" %}
                         <div class="col-md-3 mb-4">
-                            <div class="card h-100 shadow">
+                            <div class="card products h-100 shadow">
                                 {% if recipe.image %}
                                     <a href="{% url 'recipes:detail' category=recipe.recipetype.recipetype|lower slug=recipe.slug %}">
                                         <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.recipename }}" style="height: 250px; object-fit: cover;">
@@ -268,7 +268,7 @@
                         Discover the passion behind our dishes. Our chefs bring years of experience 
                         and creativity to craft unique flavors for every meal.
                     </p>
-                    <button class="btn btn-secondary">Learn More</button>
+                    <a href="/about-us" class="btn btn-secondary">Learn More</a>
                 </div>
             </div>
         </div>

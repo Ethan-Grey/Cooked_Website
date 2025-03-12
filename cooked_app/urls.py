@@ -26,6 +26,7 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('', views.home),
     path('diet/', views.diet),
+    path('about-us/', views.about_us),
     path('holidays/', views.holidays),
 ]
 
