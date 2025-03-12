@@ -43,7 +43,17 @@ def recipe_detail(request, category, slug):
     return render(request, 'recipes/recipe_detail.html', context)
 
 
-
+def all_recipes(request):
+    recipes = Recipe.objects.all()
+    recipe_types = RecipeType.objects.all()
+    
+    context = {
+        'recipes': recipes,
+        'recipe_types': recipe_types,
+        'title': 'All Recipes'
+    }
+    
+    return render(request, 'recipes/all_recipes.html', context)
 
 
 

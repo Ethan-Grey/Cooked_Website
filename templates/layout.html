@@ -55,7 +55,7 @@
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                 {% if request.user.is_authenticated %}
                   <li><a class="dropdown-item" href="/users/logout/" aria-label="logout">Logout</a></li>
-                  <li><a class="dropdown-item" href="/recipes/new-recipes" aria-label="My recipes">My Recipes</a></li>
+                  <li><a class="dropdown-item" href="/recipes/new-recipes" aria-label="My recipes">Create Recipes</a></li>
                 {% else %}
                   <li><a class="dropdown-item" href="/users/register/" aria-label="register">Register</a></li>
                   <li><a class="dropdown-item" href="/users/login/" aria-label="login">Login</a></li>

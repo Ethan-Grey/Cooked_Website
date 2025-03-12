@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-    {{ category.recipetype }} Recipes
+    All Recipes
 {% endblock %}
 
 {% block content %}
@@ -10,9 +10,9 @@
         <div class="row">
             <div class="col-12 mb-1">
                 <div class="section-title pb-5">
-                    <h1 class="display-4 fw-semibold text-uppercase">{{ category.recipetype }} Recipes</h1>
+                    <h1 class="display-4 fw-semibold text-uppercase">All Recipes</h1>
                     <div class="line"></div>
-                    <p>Discover delicious {{ category.recipetype|lower }} recipes that bring family and friends together, with fresh ingredients and easy-to-follow steps.</p>
+                    <p>Discover delicious recipes that bring family and friends together, with fresh ingredients and easy-to-follow steps.</p>
                 </div>
             </div>
         </div> 
@@ -21,11 +21,11 @@
 
 <div class="container">
     <div class="row">
-        {% for recipe in category_recipes %}
-            <div class="col-md-4 mb-4">
+        {% for recipe in recipes %}
+            <div class="col-md-3 mb-4">
                 <div class="card h-100 shadow">
                     {% if recipe.image %}
-                        <a href="{% url 'recipes:detail' category=category.recipetype|lower slug=recipe.slug %}">
+                        <a href="{% url 'recipes:detail' category=recipe.recipetype.recipetype|lower slug=recipe.slug %}">
                             <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.recipename }}" style="height: 250px; object-fit: cover;">
                         </a>
                     {% endif %}
@@ -42,29 +42,21 @@
                                     <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
                                     </svg>
-                    
-                                    <!-- Second Star -->
                                     <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
                                     </svg>
-                    
-                                    <!-- Third Star -->
                                     <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
                                     </svg>
-                    
-                                    <!-- Fourth Star -->
                                     <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
                                     </svg>
-                    
-                                    <!-- Fifth Star -->
                                     <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
                                     </svg>
                                 </div>
                     
-                                <a href="{% url 'recipes:detail' category=category.recipetype|lower slug=recipe.slug %}" class="btn btn-secondary">View Recipe</a>
+                                <a href="{% url 'recipes:detail' category=recipe.recipetype.recipetype|lower slug=recipe.slug %}" class="btn btn-secondary">View Recipe</a>
                             </div>
                         </div>
                     </div>
@@ -72,7 +64,7 @@
             </div>
         {% empty %}
             <div class="col-12 text-center">
-                <p>No {{ category.recipetype|lower }} recipes available.</p>
+                <p>No recipes available.</p>
             </div>
         {% endfor %}
     </div>
