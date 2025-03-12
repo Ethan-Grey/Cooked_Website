@@ -35,9 +35,7 @@
                 </a>
                 <ul class="dropdown-menu">
                   {% for type in recipe_types %}
-                    <li><a class="dropdown-item" href="/recipes/{{type.recipetype|lower}}">{{ type.recipetype }}</a></li>
-                    {% if not forloop.last %}
-                    {% endif %}
+                    <li><a class="dropdown-item" href="{% url 'recipes:category' category=type.recipetype|lower %}">{{ type.recipetype }}</a></li>
                   {% endfor %}
                 </ul>
               </li>

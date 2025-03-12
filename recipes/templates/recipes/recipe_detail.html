@@ -1,0 +1,63 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    {{ recipe.recipename }}
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12 mb-4">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'recipes:category' category=recipe.recipetype.recipetype|lower %}">{{ recipe.recipetype.recipetype }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ recipe.recipename }}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <h1 class="mb-3">{{ recipe.recipename }}</h1>
+            <p class="text-muted">By: {{ recipe.madeby }}</p>
+            
+            <div class="mb-4">
+                <h5>Description</h5>
+                <p>{{ recipe.description }}</p>
+            </div>
+            
+            <div class="mb-4">
+                <h5>Ingredients</h5>
+                <div class="p-3 bg-light rounded">
+                    {{ recipe.ingredients|linebreaks }}
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <h5>Instructions</h5>
+                <div class="p-3 bg-light rounded">
+                    {{ recipe.instructions|linebreaks }}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            {% if recipe.image %}
+                <img src="{{ recipe.image.url }}" class="img-fluid rounded mb-4" alt="{{ recipe.recipename }}">
+            {% endif %}
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Recipe Information</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Category:</strong> {{ recipe.recipetype.recipetype }}</p>
+                    <!-- You can add more recipe meta information here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

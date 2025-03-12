@@ -35,52 +35,55 @@
                     </div>
                 </div>
             </div> 
-        <div class="row">  <!-- Center the row -->
-            {% for recipe in recipes %}
-            <div class="col-lg-3 col-md-6 d-flex justify-content-center mt-4">
-                <div class="card">
-                    <img src="{{ recipe.image.url }}" class="card-img-top card-image-size" alt="{{ recipe.recipename }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ recipe.recipename }}</h5>
-                        <p class="card-text">{{ recipe.description|truncatewords:20 }}</p>
-                        <div class="five-star-rating svelte-1n6w264">
-                            <!-- First Star -->
-                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                            </svg>
-                        
-                            <!-- Second Star -->
-                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                            </svg>
-                        
-                            <!-- Third Star -->
-                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                            </svg>
-                        
-                            <!-- Fourth Star -->
-                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                            </svg>
-                        
-                            <!-- Fifth Star -->
-                            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                            </svg>
+            <div class="container">
+                <div class="row">
+                    {% for recipe in recipes|slice:":4" %}
+                        <div class="col-md-3 mb-4">
+                            <div class="card h-100 shadow">
+                                {% if recipe.image %}
+                                    <a href="{% url 'recipes:detail' category=recipe.recipetype.recipetype|lower slug=recipe.slug %}">
+                                        <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.recipename }}" style="height: 250px; object-fit: cover;">
+                                    </a>
+                                {% endif %}
+                                <div class="card-body text-center">
+                                    <h4 class="card-title pb-1">{{ recipe.recipename }}</h4>
+                                    <p class="text-muted pb-3">-{{ recipe.madeby }}</p>
+                                    <p class="card-text text-start pb-3">{{ recipe.description|truncatewords:18 }}</p>
+                                </div>
+                                <div class="row card-footer">
+                                    <div class="container">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="five-star-rating d-flex">
+                                                <!-- Stars code unchanged -->
+                                                <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                                </svg>
+                                                <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                                </svg>
+                                                <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                                </svg>
+                                                <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                                </svg>
+                                                <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                                </svg>
+                                            </div>
+                                            <a href="{% url 'recipes:detail' category=recipe.recipetype.recipetype|lower slug=recipe.slug %}" class="btn btn-secondary">View Recipe</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="card-footer">
-                        <small class="text-muted card-title">By {{ recipe.madeby }}</small>
-                    </div>
+                    {% empty %}
+                        <div class="col-12 text-center">
+                            <p>No recipes available.</p>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
-            {% empty %}
-            <div class="col">
-                <p>No featured recipes available.</p>
-            </div>
-            {% endfor %}
-        </div>
     </section>
 </div>
 
@@ -241,8 +244,8 @@
 
 <!-- Chef's Special Video Section -->
 
-<section id="chefs-video" class="section-padding">
-    <div class="container">
+<section class="section-padding">
+    <div class="container pt-5 mt-5">
         <div class="border-0 shadow-lg p-3">
             <div class="row align-items-center">
                 <!-- Video Section (Left - 3/5 width) -->
