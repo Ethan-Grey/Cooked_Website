@@ -7,13 +7,25 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
+
 @login_required
 def edit_profile_view(request):
+    # No changes needed here
     if request.method == 'POST':
         # Handle form submission
+        email = request.POST.get('email')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        
         # Update user information
-        # Redirect back to profile page
-        return redirect('users:profile')
+        user = request.user
+        user.email = email
+        user.first_name = first_name
+        user.last_name = last_name
+        user.save()
+        
+        # Redirect to profile page after successful update
+        return redirect('users:profile_view')
     else:
         # Display the edit form
         context = {
@@ -21,20 +33,22 @@ def edit_profile_view(request):
         }
         return render(request, 'users/edit_profile.html', context)
 
-
 def profile_view(request):
     user = request.user  # Get the current logged-in user
-    recipes = Recipe.objects.filter(madeby=user)  # Filter recipes by the logged-in user
+    
+    # CHANGE: Filter recipes by the user object instead of username
+    recipes = Recipe.objects.filter(madeby=user)
+    
     return render(request, 'users/profile_view.html', {'user': user, 'recipes': recipes})
 
-
+# You have two user_profile functions - you may want to resolve this duplication
 @login_required 
 def user_profile(request):
     # Get the current user
     user = request.user
     
-    # Fetch the user's details and their recipes
-    recipes = Recipe.objects.filter(user=user)  # Assuming each recipe is linked to a user
+    # CHANGE: Fetch recipes by the user object using madeby field
+    recipes = Recipe.objects.filter(madeby=user)
     
     context = {
         'user': user,

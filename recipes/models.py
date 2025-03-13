@@ -18,7 +18,7 @@ class Recipe(models.Model):
     instructions = models.TextField(default='No instructions provided')
     
     # Change this line to use ForeignKey instead of CharField
-    madeby = models.CharField(max_length=50)
+    madeby = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipes')
     
     image = models.ImageField(upload_to='recipes/')
     slug = models.SlugField(blank=True)

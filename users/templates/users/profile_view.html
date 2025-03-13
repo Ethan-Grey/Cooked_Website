@@ -215,6 +215,7 @@
                                                     <span><i class="bi bi-people me-1"></i> 4</span>
                                                 </div>
                                                 <div class="action-buttons">
+                                                    <a href="{% url 'recipes:delete_recipe' recipe_id=recipe.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
                                                     <a href="{% url 'recipes:detail' category=recipe.recipetype.recipetype slug=recipe.slug %}" class="btn btn-sm btn-forest-green">
                                                         View Recipe
                                                     </a>

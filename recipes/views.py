@@ -1,21 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Recipe, RecipeType
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from . import forms
 from .forms import CreateRecipe
 from . import models
 
-
-
 # Create your views here.
 def recipe_category(request, category):
-    # Get the recipe type (case-insensitive)
+    # No changes needed here
     recipe_type = get_object_or_404(RecipeType, recipetype__iexact=category)
-    
-    # Get all recipes for this category
     category_recipes = recipe_type.recipes.all()
-    
-    # Get all recipe types for the navbar dropdown
     recipe_types = RecipeType.objects.all()
     
     context = {
@@ -26,16 +21,10 @@ def recipe_category(request, category):
     
     return render(request, 'recipes/category.html', context)
 
-
-
 def recipe_detail(request, category, slug):
-    # Get the recipe type
+    # No changes needed here
     recipe_type = get_object_or_404(RecipeType, recipetype__iexact=category)
-    
-    # Get the specific recipe
     recipe = get_object_or_404(Recipe, slug=slug, recipetype=recipe_type)
-    
-    # Get all recipe types for the navbar dropdown
     recipe_types = RecipeType.objects.all()
     
     context = {
@@ -45,8 +34,8 @@ def recipe_detail(request, category, slug):
     
     return render(request, 'recipes/recipe_detail.html', context)
 
-
 def all_recipes(request):
+    # No changes needed here
     recipes = Recipe.objects.all()
     recipe_types = RecipeType.objects.all()
     
@@ -58,29 +47,6 @@ def all_recipes(request):
     
     return render(request, 'recipes/all_recipes.html', context)
 
-
-
-def breakfast(request):
-    recipe_type = RecipeType.objects.get(recipetype="Breakfast")
-    breakfast_recipes = recipe_type.recipes.all()
-    return render(request, 'recipes/breakfast.html', {'breakfast_recipes': breakfast_recipes})
-
-
-# @login_required(login_url="/users/login/")
-# def new_recipes(request):
-#     if request.method == 'POST':
-#         form = CreateRecipe(request.POST, request.FILES)
-#         if form.is_valid():
-#             newrecipe = form.save(commit=False)
-#             newrecipe.save()
-#             return redirect("/")  # Redirect after saving
-
-#     else:
-#         form = CreateRecipe()  # Ensure GET requests return the form
-
-#     return render(request, 'recipes/new_recipes.html', {'form': form})  # Always return a response
-
-
 @login_required(login_url="/users/login/")
 def new_recipes(request):
     if request.method == 'POST':
@@ -88,14 +54,8 @@ def new_recipes(request):
         if form.is_valid():
             recipe = form.save(commit=False)
             
-            # Get the user's first and last name, or use username as fallback
-            user = request.user
-            if user.first_name and user.last_name:
-                recipe.madeby = f"{user.first_name} {user.last_name}"
-            elif user.first_name:
-                recipe.madeby = user.first_name
-            else:
-                recipe.madeby = user.username
+            # CHANGE: Simply assign the user object instead of name string
+            recipe.madeby = request.user
                 
             recipe.save()
             return redirect('recipes:detail', category=recipe.recipetype.recipetype, slug=recipe.slug)
@@ -104,14 +64,12 @@ def new_recipes(request):
     
     return render(request, 'recipes/new_recipe.html', {'form': form})
 
-
 @login_required(login_url="/users/login/")
 def edit_recipe(request, pk):
     recipe = get_object_or_404(models.Recipe, pk=pk)
     
-    # Check if the current user owns this recipe
-    # You may want to add additional permission checks
-    if recipe.madeby != request.user.username and recipe.madeby != f"{request.user.first_name} {request.user.last_name}":
+    # CHANGE: Check if the current user owns this recipe using the ForeignKey
+    if recipe.madeby != request.user:
         return redirect('recipes:detail', category=recipe.recipetype.recipetype, slug=recipe.slug)
     
     if request.method == 'POST':
@@ -123,3 +81,23 @@ def edit_recipe(request, pk):
         form = CreateRecipe(instance=recipe)
     
     return render(request, 'recipes/edit_recipe.html', {'form': form, 'recipe': recipe})
+
+@login_required
+def delete_recipe(request, recipe_id):
+    # Get the recipe or return 404
+    recipe = get_object_or_404(Recipe, id=recipe_id)
+    
+    # CHANGE: Check using the ForeignKey (also fixed variable name from author to madeby)
+    if recipe.madeby != request.user:
+        messages.error(request, "You cannot delete a recipe that you didn't create.")
+        return redirect('recipes:recipe_detail', recipe_id=recipe_id)
+    
+    # If it's a POST request, delete the recipe
+    if request.method == 'POST':
+        recipe_name = recipe.recipename  # Save the name for the success message (fixed variable name)
+        recipe.delete()
+        messages.success(request, f"'{recipe_name}' has been deleted successfully.")
+        return redirect('recipes:user_recipes')  # Or wherever you want to redirect after deletion
+    
+    # If it's a GET request, show confirmation page
+    return render(request, 'recipes/confirm_delete.html', {'recipe': recipe})
