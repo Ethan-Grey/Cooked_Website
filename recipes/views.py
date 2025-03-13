@@ -82,22 +82,18 @@ def edit_recipe(request, pk):
     
     return render(request, 'recipes/edit_recipe.html', {'form': form, 'recipe': recipe})
 
-@login_required
+@login_required(login_url="/users/login/")
 def delete_recipe(request, recipe_id):
     # Get the recipe or return 404
     recipe = get_object_or_404(Recipe, id=recipe_id)
     
-    # CHANGE: Check using the ForeignKey (also fixed variable name from author to madeby)
+    # Check if the current user is the recipe creator
     if recipe.madeby != request.user:
         messages.error(request, "You cannot delete a recipe that you didn't create.")
-        return redirect('recipes:recipe_detail', recipe_id=recipe_id)
+        return redirect('users:profile')
     
-    # If it's a POST request, delete the recipe
-    if request.method == 'POST':
-        recipe_name = recipe.recipename  # Save the name for the success message (fixed variable name)
-        recipe.delete()
-        messages.success(request, f"'{recipe_name}' has been deleted successfully.")
-        return redirect('recipes:user_recipes')  # Or wherever you want to redirect after deletion
-    
-    # If it's a GET request, show confirmation page
-    return render(request, 'recipes/confirm_delete.html', {'recipe': recipe})
+    # Delete the recipe immediately
+    recipe_name = recipe.recipename
+    recipe.delete()
+    messages.success(request, f"'{recipe_name}' has been deleted successfully.")
+    return redirect('users:profile_view')
