@@ -1,0 +1,249 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    {{ user.username }}'s Profile | COOKED
+{% endblock %}
+
+{% block content %}
+<!-- Cover Photo Area -->
+<section class="section-padding mt-2">
+    <div class="cover-photo-container">
+        <div class="container position-relative">
+            <!-- Profile Info Overlay -->
+            <div class="profile-info-container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="d-flex align-items-end">
+                            <!-- Avatar Circle -->
+                            <div class="avatar-container">
+                                <div class="rounded-circle bg-dark-forest d-flex align-items-center justify-content-center" style="width: 168px; height: 168px; border: 4px solid white;">
+                                    <span class="display-4 fw-bold">{{ user.username.0|upper }}</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Name & Details -->
+                            <div class="ms-3 mb-3">
+                                <h1 class="mb-0 fw-bold">
+                                    {% if user.first_name and user.last_name %}
+                                        {{ user.first_name }} {{ user.last_name }}
+                                    {% else %}
+                                        {{ user.username }}
+                                    {% endif %}
+                                </h1>
+                                <p class="text-muted mb-0">@{{ user.username }} • {{ recipes|length }} Recipes</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="col-md-4 d-flex align-items-end justify-content-end mb-3">
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'recipes:new_recipes' %}" class="btn btn-forest-green">
+                                <i class="bi bi-plus-circle me-2"></i>New Recipe
+                            </a>
+                            <a href="{% url 'users:edit_profile' %}" class="btn btn-oak-brown">
+                                <i class="bi bi-pencil-square me-2"></i>Edit Profile
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Navigation Bar -->
+<div class="profile-nav border-bottom shadow-sm">
+    <div class="container">
+        <ul class="nav nav-pills nav-fill">
+            <li class="nav-item">
+                <a class="nav-link" href="#recipes">
+                    <i class="bi bi-grid-3x3-gap me-1"></i> Recipes
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#about">
+                    <i class="bi bi-person me-1"></i> About
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#favorites">
+                    <i class="bi bi-heart me-1"></i> Favorites
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="py-4 section-padding">
+    <div class="container">
+        <div class="row g-4 pt-5">
+            <!-- Left Column - Profile Details -->
+            <div class="col-lg-4">
+                <!-- About Card -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header border-0 py-3 bg-green text-tan">
+                        <h5 class="mb-0"><i class="bi bi-person-lines-fill me-2"></i>About</h5>
+                    </div>
+                    <div class="card-body p-0 bg-green">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item px-4 py-3 bg-tan">
+                                <i class="bi bi-person me-2"></i>
+                                <strong>Username:</strong> {{ user.username }}
+                            </li>
+                            {% if user.first_name %}
+                            <li class="list-group-item px-4 py-3 bg-tan">
+                                <i class="bi bi-person-vcard me-2"></i>
+                                <strong>First Name:</strong> {{ user.first_name }}
+                            </li>
+                            {% endif %}
+                            {% if user.last_name %}
+                            <li class="list-group-item px-4 py-3 bg-tan">
+                                <i class="bi bi-person-vcard-fill me-2"></i>
+                                <strong>Last Name:</strong> {{ user.last_name }}
+                            </li>
+                            {% endif %}
+                            {% if user.email %}
+                            <li class="list-group-item px-4 py-3 bg-tan">
+                                <i class="bi bi-envelope me-2"></i>
+                                <strong>Email:</strong> {{ user.email }}
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Stats Card -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-green text-tan border-0 py-3">
+                        <h5 class="mb-0"><i class="bi bi-bar-chart-line me-2"></i>Stats</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center g-3">
+                            <div class="col-4">
+                                <div class="p-3 border rounded">
+                                    <h3 class="m-0 text-forest-green">{{ recipes|length }}</h3>
+                                    <small class="text-muted">Recipes</small>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="p-3 border rounded">
+                                    <h3 class="m-0 text-oak-brown">0</h3>
+                                    <small class="text-muted">Liked</small>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="p-3 border rounded">
+                                    <h3 class="m-0 text-dark-forest">0</h3>
+                                    <small class="text-muted">Saved</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column - Recipes -->
+            <div class="col-lg-8" id="recipes">
+                <!-- My Recipes Section -->
+                <div class="border-0 shadow-sm" style="width: 100%;">
+                    <div class="card-header bg-green text-tan border-3 py-3 d-flex justify-content-between align-items-center">
+                        <h5 class="ms-3 mb-0"><i class="bi bi-collection me-2"></i>My Recipes</h5>
+                        <div class="dropdown">
+                            <button class="btn btn-sm text-tan btn-outline dropdown-toggle me-3" type="button" id="recipeFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-funnel me-1"></i> Filter
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="recipeFilterDropdown">
+                                <li><a class="dropdown-item" href="#">All Recipes</a></li>
+                                <li><a class="dropdown-item" href="#">Main Dishes</a></li>
+                                <li><a class="dropdown-item" href="#">Desserts</a></li>
+                                <li><a class="dropdown-item" href="#">Appetizers</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body">
+                        {% if recipes %}
+                            <div class="row g-4">
+                                {% for recipe in recipes %}
+                                    <div class="col-md-6">
+                                        <div class="card h-100  recipe-card shadow-sm">
+                                            <div class="position-relative">
+                                                {% if recipe.image %}
+                                                    <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.recipename }}" style="height: 300px; object-fit: cover;">
+                                                {% else %}
+                                                    <div class="d-flex align-items-center justify-content-center" style="height: 220px;">
+                                                        <i class="bi bi-card-image text-muted" style="font-size: 3rem;"></i>
+                                                    </div>
+                                                {% endif %}
+                                                <span class="position-absolute top-0 end-0 badge bg-forest-green m-2 py-2 px-3">
+                                                    {{ recipe.recipetype.recipetype }}
+                                                </span>
+                                            </div>
+                                            
+                                            <div class="card-body">
+                                                <h5 class="card-title fw-bold">{{ recipe.recipename }}</h5>
+                                                <p class="text-muted small">
+                                                    <i class="bi bi-person-circle me-1"></i>By {{ user.username }}
+                                                </p>
+                                                <p class="card-text">{{ recipe.description|truncatechars:80 }}</p>
+                                                
+                                                <!-- Five-star Rating (Static) -->
+                                                <div class="five-star-rating d-flex mb-3">
+                                                    <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                                    </svg>
+                                                    <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                                    </svg>
+                                                    <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                                    </svg>
+                                                    <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                                    </svg>
+                                                    <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card-footer border-top d-flex justify-content-between align-items-center pb-3">
+                                                <div class="recipe-stats d-flex align-items-center">
+                                                    <span class="me-3"><i class="bi bi-clock me-1"></i> 30m</span>
+                                                    <span><i class="bi bi-people me-1"></i> 4</span>
+                                                </div>
+                                                <div class="action-buttons">
+                                                    <a href="{% url 'recipes:detail' category=recipe.recipetype.recipetype slug=recipe.slug %}" class="btn btn-sm btn-forest-green">
+                                                        View Recipe
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="text-center py-5">
+                                <div class="empty-state mb-3">
+                                    <i class="bi bi-journal-album" style="font-size: 4rem; color: var(--c-cement-grey);"></i>
+                                </div>
+                                <h4 class="mb-2">No Recipes Yet</h4>
+                                <p class="text-muted mb-4">Start sharing your favorite recipes with the community!</p>
+                                <a href="{% url 'recipes:new_recipes' %}" class="btn btn-forest-green">
+                                    <i class="bi bi-plus-circle me-2"></i>Create Your First Recipe
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CSS to add to your stylesheet -->
+<style>
+</style>
+{% endblock %}

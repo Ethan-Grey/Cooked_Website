@@ -3,6 +3,9 @@ from .models import Recipe, RecipeType
 from django.contrib.auth.decorators import login_required
 from . import forms
 from .forms import CreateRecipe
+from . import models
+
+
 
 # Create your views here.
 def recipe_category(request, category):
@@ -63,16 +66,60 @@ def breakfast(request):
     return render(request, 'recipes/breakfast.html', {'breakfast_recipes': breakfast_recipes})
 
 
+# @login_required(login_url="/users/login/")
+# def new_recipes(request):
+#     if request.method == 'POST':
+#         form = CreateRecipe(request.POST, request.FILES)
+#         if form.is_valid():
+#             newrecipe = form.save(commit=False)
+#             newrecipe.save()
+#             return redirect("/")  # Redirect after saving
+
+#     else:
+#         form = CreateRecipe()  # Ensure GET requests return the form
+
+#     return render(request, 'recipes/new_recipes.html', {'form': form})  # Always return a response
+
+
 @login_required(login_url="/users/login/")
 def new_recipes(request):
     if request.method == 'POST':
         form = CreateRecipe(request.POST, request.FILES)
         if form.is_valid():
-            newrecipe = form.save(commit=False)
-            newrecipe.save()
-            return redirect("/")  # Redirect after saving
-
+            recipe = form.save(commit=False)
+            
+            # Get the user's first and last name, or use username as fallback
+            user = request.user
+            if user.first_name and user.last_name:
+                recipe.madeby = f"{user.first_name} {user.last_name}"
+            elif user.first_name:
+                recipe.madeby = user.first_name
+            else:
+                recipe.madeby = user.username
+                
+            recipe.save()
+            return redirect('recipes:detail', category=recipe.recipetype.recipetype, slug=recipe.slug)
     else:
-        form = CreateRecipe()  # Ensure GET requests return the form
+        form = CreateRecipe()
+    
+    return render(request, 'recipes/new_recipe.html', {'form': form})
 
-    return render(request, 'recipes/new_recipes.html', {'form': form})  # Always return a response
+
+@login_required(login_url="/users/login/")
+def edit_recipe(request, pk):
+    recipe = get_object_or_404(models.Recipe, pk=pk)
+    
+    # Check if the current user owns this recipe
+    # You may want to add additional permission checks
+    if recipe.madeby != request.user.username and recipe.madeby != f"{request.user.first_name} {request.user.last_name}":
+        return redirect('recipes:detail', category=recipe.recipetype.recipetype, slug=recipe.slug)
+    
+    if request.method == 'POST':
+        form = CreateRecipe(request.POST, request.FILES, instance=recipe)
+        if form.is_valid():
+            form.save()
+            return redirect('recipes:detail', category=recipe.recipetype.recipetype, slug=recipe.slug)
+    else:
+        form = CreateRecipe(instance=recipe)
+    
+    return render(request, 'recipes/edit_recipe.html', {'form': form, 'recipe': recipe})
