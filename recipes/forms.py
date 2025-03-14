@@ -12,7 +12,7 @@ class CreateRecipe(forms.ModelForm):
         }
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Briefly describe your recipe'}),
-            'ingredients': forms.Textarea(attrs={'rows': 8, 'placeholder': 'List your ingredients, one per line'}),
-            'instructions': forms.Textarea(attrs={'rows': 10, 'placeholder': 'Provide step-by-step instructions'}),
+            'ingredients': forms.Textarea(attrs={'rows': 4, 'placeholder': 'List your ingredients, one per line'}),
+            'instructions': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Provide step-by-step instructions'}),
             # Remove the madeby widget since we're excluding it
         }

@@ -64,23 +64,28 @@ def new_recipes(request):
     
     return render(request, 'recipes/new_recipe.html', {'form': form})
 
-@login_required(login_url="/users/login/")
-def edit_recipe(request, pk):
-    recipe = get_object_or_404(models.Recipe, pk=pk)
+@login_required
+def edit_recipe(request, recipe_id):
+    recipe = get_object_or_404(models.Recipe, id=recipe_id)
     
-    # CHANGE: Check if the current user owns this recipe using the ForeignKey
+    # Ensure only the recipe owner can edit it
     if recipe.madeby != request.user:
-        return redirect('recipes:detail', category=recipe.recipetype.recipetype, slug=recipe.slug)
+        messages.error(request, "You don't have permission to edit this recipe.")
+        return redirect('users:profile')
     
     if request.method == 'POST':
         form = CreateRecipe(request.POST, request.FILES, instance=recipe)
         if form.is_valid():
             form.save()
+            messages.success(request, f"Your recipe '{recipe.recipename}' has been updated successfully!")
             return redirect('recipes:detail', category=recipe.recipetype.recipetype, slug=recipe.slug)
     else:
         form = CreateRecipe(instance=recipe)
     
-    return render(request, 'recipes/edit_recipe.html', {'form': form, 'recipe': recipe})
+    return render(request, 'recipes/edit_recipe.html', {
+        'form': form,
+        'recipe': recipe
+    })
 
 @login_required(login_url="/users/login/")
 def delete_recipe(request, recipe_id):

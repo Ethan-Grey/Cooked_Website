@@ -94,7 +94,7 @@
 <div class="profile-nav border-bottom shadow-sm">
     <div class="container">
         <ul class="nav nav-pills nav-fill">
-            <li class="nav-item">
+            <li class="nav-item bg-clear">
                 <a class="nav-link" href="#recipes">
                     <i class="bi bi-grid-3x3-gap me-1"></i> Recipes
                 </a>
@@ -246,19 +246,18 @@
                                                 </div>
                                             </div>
                                             
-                                            <div class="card-footer border-top d-flex justify-content-between align-items-center pb-3">
-                                                <div class="recipe-stats d-flex align-items-center">
-                                                    <span class="me-3"><i class="bi bi-clock me-1"></i> 30m</span>
-                                                    <span><i class="bi bi-people me-1"></i> 4</span>
-                                                </div>
+                                            <div class="card-footer border-top d-flex justify-content-center align-items-center pb-3">
                                                 <div class="action-buttons">
                                                     <form method="POST" action="{% url 'recipes:delete_recipe' recipe_id=recipe.id %}" style="display:inline;">
                                                         {% csrf_token %}
-                                                        <button type="submit" class="btn btn-sm btn-outline-danger" 
+                                                        <button type="submit" class="btn btn-sm btn-outline-danger me-2" 
                                                                 onclick="return confirm('Are you sure you want to delete {{ recipe.recipename }}? This cannot be undone.');">
                                                             Delete
                                                         </button>
                                                     </form>
+                                                    <a href="{% url 'recipes:edit_recipe' recipe_id=recipe.id %}" class="btn btn-sm btn-forest-green me-2">
+                                                        <i class="bi bi-pencil-square"></i> Edit
+                                                    </a>
                                                     <a href="{% url 'recipes:detail' category=recipe.recipetype.recipetype slug=recipe.slug %}" class="btn btn-sm btn-forest-green">
                                                         View Recipe
                                                     </a>
@@ -283,11 +282,51 @@
                     </div>
                 </div>
             </div>
+
+                        <!-- About Section -->
+            <div class="col-lg-8 d-none" id="about">
+                <div class="border-0 shadow-sm" style="width: 100%;">
+                    <div class="card-header bg-green text-tan border-3 py-3 d-flex justify-content-between align-items-center">
+                        <h5 class="ms-3 mb-0"><i class="bi bi-person me-2"></i>About</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="p-4">
+                            <h4>About {{ user.username }}</h4>
+                            <p>This is where you can display additional information about the user.</p>
+                            <!-- Add more about content here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Favorites Section -->
+            <div class="col-lg-8 d-none" id="favorites">
+                <div class="border-0 shadow-sm" style="width: 100%;">
+                    <div class="card-header bg-green text-tan border-3 py-3 d-flex justify-content-between align-items-center">
+                        <h5 class="ms-3 mb-0"><i class="bi bi-heart me-2"></i>Favorites</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if favorite_recipes %}
+                            <div class="row g-4">
+                                <!-- Loop through favorite recipes here -->
+                                <p>Your favorite recipes will appear here</p>
+                            </div>
+                        {% else %}
+                            <div class="text-center py-5">
+                                <div class="empty-state mb-3">
+                                    <i class="bi bi-heart" style="font-size: 4rem; color: var(--c-cement-grey);"></i>
+                                </div>
+                                <h4 class="mb-2">No Favorites Yet</h4>
+                                <p class="text-muted mb-4">Start adding your favorite recipes to your collection!</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
         </div>
     </div>
 </div>
 
-<!-- CSS to add to your stylesheet -->
-<style>
-</style>
+
 {% endblock %}

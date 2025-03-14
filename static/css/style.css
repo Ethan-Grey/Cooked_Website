@@ -28,6 +28,10 @@ body {
     background-color: var(--c-tan);
 }
 
+.bg-clear {
+    background-color: #00000000;
+}
+
 .text-light {
     color: var(--c-tan);
 }
@@ -64,7 +68,22 @@ body {
 }
 
 .navbar-brand, .nav-link {
-    color: var(--c-body) !important; /* Oak Brown for Navbar */
+    color: var(--c-body) /* Oak Brown for Navbar */
+}
+
+.nav-link:hover {
+    color: burlywood /* Oak Brown for Navbar */
+}
+
+.profile-nav .nav-link.active {
+    color:var(--c-dark-oak);
+    border-bottom-color: var(--c-forest-green);
+    background-color: transparent;
+    font-weight: bold;
+}
+
+.profile-nav .nav-link:hover {
+    color: burlywood /* Oak Brown for Navbar */
 }
 
 .navbar-toggler {
