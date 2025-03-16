@@ -5,6 +5,7 @@ from django.contrib import messages
 from . import forms
 from .forms import CreateRecipe
 from . import models
+from django.db.models import Q
 
 # Create your views here.
 def recipe_category(request, category):
@@ -102,3 +103,29 @@ def delete_recipe(request, recipe_id):
     recipe.delete()
     messages.success(request, f"'{recipe_name}' has been deleted successfully.")
     return redirect('users:profile_view')
+
+
+
+
+def search(request):
+    query = request.GET.get('q', '')
+    recipe_types = RecipeType.objects.all()
+    
+    if query:
+        # Search in recipe name, description, and ingredients
+        results = Recipe.objects.filter(
+            Q(recipename__icontains=query) |
+            Q(description__icontains=query) |
+            Q(ingredients__icontains=query)
+        ).distinct()
+    else:
+        results = Recipe.objects.none()
+    
+    context = {
+        'query': query,
+        'results': results,
+        'recipe_types': recipe_types,
+        'title': f'Search Results for "{query}"'
+    }
+    
+    return render(request, 'recipes/search_results.html', context)
