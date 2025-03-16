@@ -1,43 +1,78 @@
-{% extends 'layout.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <section class="login-section">
+        <div class="login-container">
+            <div class="login-content">
+                <!-- Left side with gradient background -->
+                <div class="login-welcome">
+                    <div class="welcome-content">
+                        <h1>Edit Your Profile</h1>
+                        <p>Update your personal information and manage your account details.</p>
+                    </div>
+                    <!-- Decorative elements -->
+                    <div class="decorative-elements">
+                        <div class="circle-1"></div>
+                        <div class="circle-2"></div>
+                        <div class="wave-line"></div>
+                    </div>
+                </div>
 
-{% block title %}
-    Edit Profile
-{% endblock %}
-
-{% block content %}
-<section class="section-padding">
-    <div class="container py-5">
-        <div class="card">
-            <div class="card-header bg-green text-tan">
-                <h4 class="mb-0">Edit Profile</h4>
-            </div>
-            <div class="card-body">
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}" readonly>
-                        <small class="text-muted">Username cannot be changed</small>
+                <!-- Right side with form -->
+                <div class="login-form-container">
+                    <div class="login-form-content">
+                        <h2>Profile Details</h2>
+                        <form method="POST" class="login-form">
+                            {% csrf_token %}
+                            <div class="form-group position-relative">
+                                <label for="username" class="position-absolute" style="left: 15px; top: 50%; transform: translateY(-50%); margin-top: -10px;">
+                                    <i class="fas fa-user"></i>
+                                </label>
+                                <input type="text" id="username" name="username" value="{{ user.username }}" class="form-control pl-5" readonly>
+                                <small class="text-muted d-block mt-1">Username cannot be changed</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">
+                                    <i class="fas fa-envelope"></i>
+                                </label>
+                                <input type="email" id="email" name="email" value="{{ user.email }}" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="first_name">
+                                    <i class="fas fa-user"></i>
+                                </label>
+                                <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}" class="form-control" required placeholder="First Name">
+                            </div>
+                            <div class="form-group">
+                                <label for="last_name">
+                                    <i class="fas fa-user"></i>
+                                </label>
+                                <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}" class="form-control" required placeholder="Last Name">
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="sign-in-btn">Save Changes</button>
+                                <a href="{% url 'users:profile_view' %}" class="btn btn-secondary btn-block mt-3">Cancel</a>
+                            </div>
+                        </form>
+                        <div class="register-link">
+                            <p><a href="{% url 'home' %}">Back to Home</a></p>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
-                    </div>
-                    <div class="mb-3">
-                        <label for="first_name" class="form-label">First Name</label>
-                        <input type="text" class="form-control" id="first_name" name="first_name" value="{{ user.first_name }}">
-                    </div>
-                    <div class="mb-3">
-                        <label for="last_name" class="form-label">Last Name</label>
-                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{ user.last_name }}">
-                    </div>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <a href="{% url 'users:profile_view' %}" class="btn btn-primary me-md-2">Cancel</a>
-                        <button type="submit" class="btn btn-secondary">Save Changes</button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
-</section>
-{% endblock %}
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

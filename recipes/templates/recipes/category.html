@@ -9,10 +9,10 @@
     <div class="container text-center">
         <div class="row">
             <div class="col-12 mb-1">
-                <div class="section-title pb-5">
+                <div class="section-title pb-5" data-aos="fade-down" data-aos-duration="1000">
                     <h1 class="display-4 fw-semibold text-uppercase">{{ category.recipetype }} Recipes</h1>
                     <div class="line"></div>
-                    <p>Discover delicious {{ category.recipetype|lower }} recipes that bring family and friends together, with fresh ingredients and easy-to-follow steps.</p>
+                    <p class="lead">Discover delicious {{ category.recipetype|lower }} recipes that bring family and friends together, with fresh ingredients and easy-to-follow steps.</p>
                 </div>
             </div>
         </div> 
@@ -22,57 +22,42 @@
 <div class="container">
     <div class="row">
         {% for recipe in category_recipes %}
-            <div class="col-md-3 mb-4">
-                <div class="card products h-100 w-100 shadow">
+            <div class="col-md-3 mb-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="{% widthratio forloop.counter 1 200 %}">
+                <div class="card h-100 shadow">
                     {% if recipe.image %}
                         <a href="{% url 'recipes:detail' category=category.recipetype|lower slug=recipe.slug %}">
                             <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.recipename }}" style="height: 250px; object-fit: cover;">
                         </a>
                     {% endif %}
-                    <div class="card-body text-start">
-                        <h4 class="card-title pb-1">{{ recipe.recipename }}</h4>
-                        <p class="text-muted pb-3">-{{ recipe.madeby }}</p>
-                        <p class="card-text text-start pb-3">{{ recipe.description|truncatewords:18 }}</p>
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">{{ recipe.recipename }}</h5>
+                        <p class="text-muted">By {{ recipe.madeby }}</p>
+                        <p class="card-text">{{ recipe.description|truncatewords:15 }}</p>
                     </div>
-                    <div class="row card-footer">
-                        <div class="container">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="five-star-rating d-flex">
-                                    <!-- First Star -->
-                                    <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                                    </svg>
-                    
-                                    <!-- Second Star -->
-                                    <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                                    </svg>
-                    
-                                    <!-- Third Star -->
-                                    <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                                    </svg>
-                    
-                                    <!-- Fourth Star -->
-                                    <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                                    </svg>
-                    
-                                    <!-- Fifth Star -->
-                                    <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                                    </svg>
-                                </div>
-                    
-                                <a href="{% url 'recipes:detail' category=category.recipetype|lower slug=recipe.slug %}" class="btn btn-secondary">View Recipe</a>
+                    <div class="card-footer bg-transparent">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="five-star-rating d-flex">
+                                {% for i in "12345" %}
+                                <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                </svg>
+                                {% endfor %}
                             </div>
+                            <a href="{% url 'recipes:detail' category=category.recipetype|lower slug=recipe.slug %}" class="btn btn-secondary">View Recipe</a>
                         </div>
                     </div>
                 </div>
             </div>
         {% empty %}
-            <div class="col-12 text-center">
-                <p>No {{ category.recipetype|lower }} recipes available.</p>
+            <div class="col-12 text-center" data-aos="fade-up" data-aos-duration="1000">
+                <div class="empty-state mb-3">
+                    <i class="bi bi-journal-album" style="font-size: 4rem; color: var(--c-cement-grey);"></i>
+                </div>
+                <h4 class="mb-2">No {{ category.recipetype|lower }} recipes available</h4>
+                <p class="text-muted mb-4">Be the first to add a recipe in this category!</p>
+                <a href="{% url 'recipes:new_recipes' %}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle me-2"></i>Create Recipe
+                </a>
             </div>
         {% endfor %}
     </div>

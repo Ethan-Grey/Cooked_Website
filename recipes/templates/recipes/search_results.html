@@ -4,14 +4,13 @@
 
 {% block content %}
 <div class="container mt-5">
-
     <div class="container py-5 text-center">
         <div class="row">
             <div class="col-12 mb-1">
-                <div class="section-title pb-5 section-padding">
+                <div class="section-title pb-5 section-padding" data-aos="fade-down" data-aos-duration="1000">
                     <h1 class="display-4 fw-semibold text-uppercase">{{ title }}</h1>
                     <div class="line"></div>
-                    <p>Discover delicious recipes that bring family and friends together, with fresh ingredients and easy-to-follow steps.</p>
+                    <p class="lead">Discover delicious recipes that bring family and friends together, with fresh ingredients and easy-to-follow steps.</p>
                 </div>
             </div>
         </div> 
@@ -19,31 +18,76 @@
     
     {% if query %}
         {% if results %}
-            <p class="ps-4 ms-2">Found {{ results|length }} result{{ results|length|pluralize }} for "{{ query }}"</p>
+            <div data-aos="fade-up" data-aos-duration="800">
+                <p class="ps-4 ms-2 h5">Found {{ results|length }} result{{ results|length|pluralize }} for "{{ query }}"</p>
+            </div>
             
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 {% for recipe in results %}
-                <div class="col pb-5">
-                    <div class="card h-100 products">
-                        <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.recipename }}" style="height: 200px; object-fit: cover;">
+                <div class="col pb-5" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="{% widthratio forloop.counter 1 200 %}">
+                    <div class="card h-100 shadow">
+                        {% if recipe.image %}
+                            <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.recipename }}" style="height: 250px; object-fit: cover;">
+                        {% else %}
+                            <div class="d-flex align-items-center justify-content-center bg-light" style="height: 250px;">
+                                <i class="bi bi-card-image text-muted" style="font-size: 3rem;"></i>
+                            </div>
+                        {% endif %}
                         <div class="card-body">
-                            <h5 class="card-title">{{ recipe.recipename }}</h5>
+                            <h5 class="card-title fw-bold">{{ recipe.recipename }}</h5>
                             <p class="card-text">{{ recipe.description|truncatechars:100 }}</p>
-                            <p class="card-text"><small class="text-muted">Category: {{ recipe.recipetype }}</small></p>
-                            <a href="{% url 'recipes:detail' category=recipe.recipetype.recipetype|lower slug=recipe.slug %}" class="btn btn-primary">View Recipe</a>
+                            <p class="text-muted small">
+                                <i class="bi bi-tag me-1"></i>{{ recipe.recipetype }}
+                            </p>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="five-star-rating d-flex">
+                                    {% for i in "12345" %}
+                                    <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                    </svg>
+                                    {% endfor %}
+                                </div>
+                                <a href="{% url 'recipes:detail' category=recipe.recipetype.recipetype|lower slug=recipe.slug %}" class="btn btn-secondary">View Recipe</a>
+                            </div>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
             </div>
         {% else %}
-            <div class="alert alert-info">
-                No recipes found matching "{{ query }}". Try a different search term.
+            <div class="text-center py-5" data-aos="fade-up" data-aos-duration="1000">
+                <div class="empty-state mb-3">
+                    <i class="bi bi-search" style="font-size: 4rem; color: var(--c-cement-grey);"></i>
+                </div>
+                <h4 class="mb-2">No Results Found</h4>
+                <p class="text-muted mb-4">No recipes found matching "{{ query }}". Try different keywords or browse our categories.</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{% url 'recipes:all_recipes' %}" class="btn btn-primary">
+                        <i class="bi bi-grid-3x3-gap me-2"></i>Browse All Recipes
+                    </a>
+                    <a href="/" class="btn btn-secondary">
+                        <i class="bi bi-house me-2"></i>Go Home
+                    </a>
+                </div>
             </div>
         {% endif %}
     {% else %}
-        <div class="alert alert-warning">
-            Please enter a search term to find recipes.
+        <div class="text-center py-5" data-aos="fade-up" data-aos-duration="1000">
+            <div class="empty-state mb-3">
+                <i class="bi bi-search" style="font-size: 4rem; color: var(--c-cement-grey);"></i>
+            </div>
+            <h4 class="mb-2">Start Your Search</h4>
+            <p class="text-muted mb-4">Enter a search term above to find delicious recipes.</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{% url 'recipes:all_recipes' %}" class="btn btn-primary">
+                    <i class="bi bi-grid-3x3-gap me-2"></i>Browse All Recipes
+                </a>
+                <a href="/" class="btn btn-secondary">
+                    <i class="bi bi-house me-2"></i>Go Home
+                </a>
+            </div>
         </div>
     {% endif %}
 </div>

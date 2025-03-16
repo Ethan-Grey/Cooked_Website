@@ -5,68 +5,61 @@
 {% endblock %}
 
 {% block content %}
-<section class="section-padding mt-5">
-    <div class="container text-center">
-        <div class="row">
-            <div class="col-12 mb-1">
-                <div class="section-title pb-5">
-                    <h1 class="display-4 fw-semibold text-uppercase">All Recipes</h1>
-                    <div class="line"></div>
-                    <p>Discover delicious recipes that bring family and friends together, with fresh ingredients and easy-to-follow steps.</p>
-                </div>
-            </div>
-        </div> 
+<div class="container section-padding">
+    <!-- Header Section -->
+    <div class="row mb-5">
+        <div class="col-12 text-center" data-aos="fade-down" data-aos-duration="1000">
+            <h1 class="display-4 fw-semibold text-uppercase">All Recipes</h1>
+            <div class="line"></div>
+            <p class="lead">Explore our collection of delicious recipes</p>
+        </div>
     </div>
-</section>
 
-<div class="container">
+    <!-- Filters Section -->
+    <div class="row mb-4" data-aos="fade-up" data-aos-duration="800">
+        <div class="col-md-12">
+            <form method="get" class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <!-- ... existing filter form ... -->
+            </form>
+        </div>
+    </div>
+
+    <!-- Recipe Cards -->
     <div class="row">
         {% for recipe in recipes %}
-            <div class="col-md-3 mb-4">
-                <div class="card products h-100 w-100 shadow">
-                    {% if recipe.image %}
-                        <a href="{% url 'recipes:detail' category=recipe.recipetype.recipetype|lower slug=recipe.slug %}">
-                            <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.recipename }}" style="height: 250px; object-fit: cover;">
-                        </a>
-                    {% endif %}
-                    <div class="card-body text-start">
-                        <h4 class="card-title pb-1">{{ recipe.recipename }}</h4>
-                        <p class="text-muted pb-3">-{{ recipe.madeby }}</p>
-                        <p class="card-text text-start pb-3">{{ recipe.description|truncatewords:18 }}</p>
-                    </div>
-                    <div class="row card-footer">
-                        <div class="container">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="five-star-rating d-flex">
-                                    <!-- First Star -->
-                                    <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                                    </svg>
-                                    <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                                    </svg>
-                                    <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                                    </svg>
-                                    <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                                    </svg>
-                                    <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                                    </svg>
-                                </div>
-                    
-                                <a href="{% url 'recipes:detail' category=recipe.recipetype.recipetype|lower slug=recipe.slug %}" class="btn btn-secondary">View Recipe</a>
-                            </div>
-                        </div>
-                    </div>
+        <div class="col-md-3 mb-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="{% widthratio forloop.counter 1 100 %}">
+            <div class="card h-100 shadow">
+                {% if recipe.image %}
+                <a href="{% url 'recipes:detail' category=recipe.recipetype.recipetype|lower slug=recipe.slug %}">
+                    <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.recipename }}" style="height: 200px; object-fit: cover;">
+                </a>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ recipe.recipename }}</h5>
+                    <p class="text-muted">By {{ recipe.madeby }}</p>
+                    <p class="card-text">{{ recipe.description|truncatewords:15 }}</p>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a href="{% url 'recipes:detail' category=recipe.recipetype.recipetype|lower slug=recipe.slug %}" class="btn btn-secondary">View Recipe</a>
                 </div>
             </div>
+        </div>
         {% empty %}
-            <div class="col-12 text-center">
-                <p>No recipes available.</p>
-            </div>
+        <div class="col-12 text-center">
+            <p>No recipes found.</p>
+        </div>
         {% endfor %}
     </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <div class="row mt-4" data-aos="fade-up" data-aos-duration="800">
+        <div class="col-12">
+            <nav aria-label="Page navigation">
+                <!-- ... existing pagination ... -->
+            </nav>
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

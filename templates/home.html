@@ -3,20 +3,27 @@
 {% block title %}Home - Cooking App{% endblock %}
 
 {% block content %}
+<!-- Add AOS CSS and JS files -->
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 
-
+<style>
+    /* Your existing responsive styles */
+    @media (max-width: 768px) {
+        /* ... existing styles ... */
+    }
+</style>
 
 <section id="hero" class="d-flex align-items-center text-center">
     <div class="container">
-      <div class="row"data-aos="fade-up" data-aos-delay="150">
-        <div class="col-12">
-          <h1 data-aos="fade-right" data-asos-delay="150" class="text-uppercase fw-semibold display-1">Welcome to Cooked</h1>
-          <h3 class="mt-3 mb-4" data-aos="fade-left" data-aos-delay="150">
-            Explore delicious recipes and improve your cooking skills!
-          </h3>
-          <a href="{% url 'recipes:all_recipes' %}" class="btn btn-secondary">Explore Recipes</a>
+        <div class="row">
+            <div class="col-12">
+                <h1 data-aos="fade-down" data-aos-duration="1000" class="text-uppercase fw-semibold display-1">Welcome to Cooked</h1>
+                <h3 class="mt-3 mb-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+                    Explore delicious recipes and improve your cooking skills!
+                </h3>
+                <a href="{% url 'recipes:all_recipes' %}" class="btn btn-secondary" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="400">Explore Recipes</a>
+            </div>
         </div>
-      </div>
     </div>
 </section>
 
@@ -28,17 +35,17 @@
     <section class="section-padding">
             <div class="row">
                 <div class="col-12 mb-1">
-                    <div class="section-title pb-5">
+                    <div class="section-title pb-5" data-aos="fade-up" data-aos-duration="1000">
                         <h1 class="display-4 fw-semibold text-uppercase">Featured Recipes</h1>
                         <div class="line"></div>
                         <p>Discover the best recipes that bring family and friends together, with fresh ingredients and easy-to-follow steps.</p>
                     </div>
                 </div>
-            </div> 
+            </div>
             <div class="container">
                 <div class="row">
                     {% for recipe in recipes|slice:":4" %}
-                        <div class="col-md-3 mb-4">
+                        <div class="col-md-3 mb-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="{% widthratio forloop.counter 1 200 %}">
                             <div class="card products h-100 w-100 shadow">
                                 {% if recipe.image %}
                                     <a href="{% url 'recipes:detail' category=recipe.recipetype.recipetype|lower slug=recipe.slug %}">
@@ -93,15 +100,15 @@
     <div class="container pb-5 mb-5">
         <div class="row">
             <div class="col-12">
-                <div class="section-title mb-1 pb-5">
+                <div class="section-title mb-1 pb-5" data-aos="fade-up" data-aos-duration="1000">
                     <h1 class="display-4 fw-semibold text-uppercase">Community Feedback</h1>
                     <div class="line"></div>
-                    <p>Discover the best recipes that bring family and friends together, with fresh ingredients and easy-to-follow steps.</p>
+                    <p>Discover what our community has to say about their cooking experiences.</p>
                 </div>
             </div>
         </div> 
         <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-3" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">-John Doe</h5>
@@ -135,7 +142,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-3" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">-Sarah Thomson</h5>
@@ -169,7 +176,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-3" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">-Jane Smith</h5>
@@ -203,7 +210,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-3" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">-Robert Johnson</h5>
@@ -249,7 +256,7 @@
         <div class="border-0 shadow-lg">
             <div class="row align-items-center">
                 <!-- Video Section (Left - 3/5 width) -->
-                <div class="col-md-7">
+                <div class="col-md-7" data-aos="fade-right" data-aos-duration="1000">
                     <div class="ratio ratio-16x9">
                         <iframe 
                             src="https://www.youtube.com/embed/wLL8H_h_nvs?autoplay=1" 
@@ -262,7 +269,7 @@
                 </div>
 
                 <!-- Text Section (Right - 2/5 width) -->
-                <div class="col-md-5 ps-5">
+                <div class="col-md-5 ps-5" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
                     <h2 class="fw-semibold text-uppercase">Meet Our Chefs</h2>
                     <p class="">
                         Discover the passion behind our dishes. Our chefs bring years of experience 
@@ -275,5 +282,20 @@
     </div>
 </section>
 
+<!-- Initialize AOS -->
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        AOS.init({
+            offset: 120,
+            delay: 0,
+            duration: 1000,
+            easing: 'ease',
+            once: true,
+            mirror: false,
+            anchorPlacement: 'top-bottom'
+        });
+    });
+</script>
 
 {% endblock %}

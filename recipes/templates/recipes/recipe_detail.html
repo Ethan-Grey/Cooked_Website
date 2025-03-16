@@ -5,7 +5,65 @@
 {% endblock %}
 
 {% block content %}
-<section class="section-padding">
+<div class="container section-padding mt-5">
+    <div class="row">
+        <!-- Recipe Image -->
+        <div class="col-md-6" data-aos="fade-right" data-aos-duration="1000">
+            {% if recipe.image %}
+                <img src="{{ recipe.image.url }}" alt="{{ recipe.recipename }}" class="img-fluid rounded shadow-lg" style="width: 600px; height: 400px; object-fit: cover;">
+            {% endif %}
+        </div>
+        
+        <!-- Recipe Details -->
+        <div class="col-md-6" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
+            <h1 class="display-4 fw-bold">{{ recipe.recipename }}</h1>
+            <p class="text-muted">By {{ recipe.madeby }}</p>
+            <p class="lead">{{ recipe.description }}</p>
+            
+            <!-- Recipe Meta Info -->
+            <div class="d-flex justify-content-between align-items-center mb-4" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400">
+                <span><i class="bi bi-clock"></i> {{ recipe.cookingtime }} mins</span>
+                <span><i class="bi bi-people"></i> {{ recipe.servings }} servings</span>
+                <span><i class="bi bi-tag"></i> {{ recipe.recipetype }}</span>
+                <span>
+                    {% if user.is_authenticated %}
+                        {% if user in recipe.favorites.all %}
+                            <form action="{% url 'recipes:remove_from_favorites' recipe_id=recipe.id %}" method="POST" class="m-0">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-secondary-outline">
+                                    <i class="bi bi-heart-fill"></i> Remove from Favorites
+                                </button>
+                            </form>
+                        {% else %}
+                            <form action="{% url 'recipes:add_to_favorites' recipe_id=recipe.id %}" method="POST" class="m-0">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-secondary-outline">
+                                    <i class="bi bi-heart"></i> Add to Favorites
+                                </button>
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ingredients Section -->
+    <div class="row mt-5" data-aos="fade-up" data-aos-duration="1000">
+        <div class="col-md-4">
+            <h2 class="mb-4">Ingredients</h2>
+            {{ recipe.ingredients|linebreaks }}
+        </div>
+
+        <!-- Instructions Section -->
+        <div class="col-md-8" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+            <h2 class="mb-4">Instructions</h2>
+            {{ recipe.instructions|linebreaks }}
+        </div>
+    </div>
+</div>
+
+{% comment %} <section class="section-padding">
     <div class="container py-5">
         
         {% if messages %}
@@ -83,5 +141,5 @@
             </div>
         </div>
     </div>
-</section>
+</section> {% endcomment %}
 {% endblock %}

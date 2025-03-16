@@ -1,31 +1,31 @@
 :root{
     /* Primary Colors */
-    --c-oak-brown: #6B4F3A; /* Oak Brown */
-    --c-forest-green: #2E4A46; /* Foresty Green */
-    --c-cement-grey: #A3A8A1; /* Cementy Grey */
-    --c-tan: #f5f1e6; /* Tan Background Color */
-    --c-body: #4A3B2B; /* Darker Brown for text */
+    --c-primary: #424242; /* Dark Grey */
+    --c-secondary: #686868; /* Medium Grey */
+    --c-accent: #D4C5B1; /* Light Cream */
+    --c-background: #FFFFFF; /* White */
+    --c-text: #2C2C2C; /* Deep Grey */
     
     /* Accent Colors */
-    --c-light-oak: #8C6A47; /* Light Oak Brown */
-    --c-dark-oak: #5E3B29; /* Darker Oak Brown */
-    --c-light-forest: #3B5C4B; /* Light Forest Green */
-    --c-dark-forest: #1F3A35; /* Dark Forest Green */
+    --c-primary-light: #686868; /* Light Grey */
+    --c-primary-dark: #303030; /* Darker Grey */
+    --c-accent-light: #E8E1D4; /* Lighter Cream */
+    --c-accent-dark: #B5A48C; /* Dark Cream */
     
     /* Other */
     --font-base: "quilon", sans-serif;
-    --box-shadow: 0px 15px 25px rgba(0,0,0,0.08);
+    --box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.08);
     --transition: all 0.5s ease;
 }
 
 body {
-    background-color: var(--c-tan); /* Set Tan as background */
-    color: var(--c-body);
+    background-color: #FFFFFF;
+    color: var(--c-text);
     font-family: Arial, sans-serif;
 }
 
 .bg-tan {
-    background-color: var(--c-tan);
+    background-color: var(--c-background);
 }
 
 .bg-clear {
@@ -33,15 +33,15 @@ body {
 }
 
 .text-light {
-    color: var(--c-tan);
+    color: var(--c-background);
 }
 
 .bg-dark {
-    background-color: var(--c-oak-brown);
+    background-color: var(--c-primary);
 }
 
-.bg-green {
-    background-color: var(--c-forest-green);
+.bg-main {
+    background-color: var(--c-primary);
 }
 
 .row {
@@ -68,7 +68,7 @@ body {
 }
 
 .navbar-brand, .nav-link {
-    color: var(--c-body) /* Oak Brown for Navbar */
+    color: var(--c-text) /* Oak Brown for Navbar */
 }
 
 .nav-link:hover {
@@ -76,8 +76,8 @@ body {
 }
 
 .profile-nav .nav-link.active {
-    color:var(--c-dark-oak);
-    border-bottom-color: var(--c-forest-green);
+    color:var(--c-primary-dark);
+    border-bottom-color: var(--c-accent);
     background-color: transparent;
     font-weight: bold;
 }
@@ -87,7 +87,7 @@ body {
 }
 
 .navbar-toggler {
-    border-color: var(--c-cement-grey);
+    border-color: var(--c-text);
 }
 
 .logo {
@@ -102,19 +102,19 @@ body {
 }
 
 .btn-primary {
-    background-color: var(--c-oak-brown);
+    background-color: var(--c-primary);
     border: none;
 }
 .btn-primary:hover {
-    background-color: var(--c-dark-oak); /* Darker Oak for hover */
+    background-color: var(--c-primary-dark); /* Darker Oak for hover */
 }
 
 .btn-secondary {
-    background-color: var(--c-forest-green);
+    background-color: var(--c-primary-dark);
     border: none;
 }
 .btn-secondary:hover {
-    background-color: var(--c-dark-forest); /* Darker Forest Green for hover */
+    background-color: var(--c-accent-dark); /* Darker Forest Green for hover */
 }
 
 /* Cards */
@@ -138,12 +138,12 @@ body {
 }
 
 .card-title {
-    color: var(--c-oak-brown); /* Oak Brown for Card Title */
+    color: var(--c-primary); /* Oak Brown for Card Title */
     font-weight: bold;
 }
 
 .card-text {
-    color: var(--c-body);
+    color: var(--c-text);
 }
 
 .card-image-size {
@@ -160,8 +160,8 @@ body {
 
 /* Footer */
 footer {
-    background-color: var(--c-oak-brown);
-    color: var(--c-tan); /* Cement Grey for footer text */
+    background-color: var(--c-primary);
+    color: var(--c-background); /* Cement Grey for footer text */
     padding: 20px;
     text-align: center;
 }
@@ -208,7 +208,7 @@ footer {
     content: "";
     width: 100%;
     height: 100%;
-    background: rgba(var(--c-brand-rgb), 0.1);
+    background: rgba(var(--c-accent-rgb), 0.1);
     position: absolute;
     bottom: 0;
     right: 0;
@@ -217,14 +217,14 @@ footer {
 .products:hover::after{
     width: 100%;
     height: 100%;
-    background: var(--c-light-oak) no-repeat center center / cover;
+    background: var(--c-primary-light) no-repeat center center / cover;
     z-index: -1;
 }
 .products:hover h5,
 .products:hover h4,
 .products:hover p,
 .products:hover .btn{
-    color: var(--c-tan);
+    color: var(--c-background);
 }
 .products:hover .btn-brand{
     background:rgba(0,0,0,0.00);
@@ -236,51 +236,51 @@ footer {
 
 
 .btn-oak-brown {
-    background-color: var(--c-oak-brown);
-    color: var(--c-tan);
+    background-color: var(--c-primary);
+    color: var(--c-background);
 }
 .btn-oak-brown:hover {
-    background-color: var(--c-dark-oak);
-    color: var(--c-tan);
+    background-color: var(--c-primary-dark);
+    color: var(--c-background);
 }
 
 .btn-forest-green {
-    background-color: var(--c-forest-green);
-    color: var(--c-tan);
+    background-color: var(--c-accent);
+    color: var(--c-background);
 }
 .btn-forest-green:hover {
-    background-color: var(--c-dark-forest);
-    color: var(--c-tan);
+    background-color: var(--c-accent-dark);
+    color: var(--c-background);
 }
 
 .btn-outline-forest-green {
-    color: var(--c-forest-green);
-    border-color: var(--c-forest-green);
+    color: var(--c-accent);
+    border-color: var(--c-accent);
 }
 .btn-outline-forest-green:hover {
-    background-color: var(--c-forest-green);
-    color: var(--c-tan);
+    background-color: var(--c-accent);
+    color: var(--c-background);
 }
 
 .btn-outline-oak-brown {
-    color: var(--c-oak-brown);
-    border-color: var(--c-oak-brown);
+    color: var(--c-primary);
+    border-color: var(--c-primary);
 }
 .btn-outline-oak-brown:hover {
-    background-color: var(--c-oak-brown);
-    color: var(--c-tan);
+    background-color: var(--c-primary);
+    color: var(--c-background);
 }
 
 .bg-oak-brown {
-    background-color: var(--c-oak-brown);
+    background-color: var(--c-primary);
 }
 
 .bg-forest-green {
-    background-color: var(--c-forest-green);
+    background-color: var(--c-accent);
 }
 
 .text-tan {
-    color: var(--c-tan);
+    color: var(--c-background);
 }
 
 .recipe-card {
@@ -300,4 +300,236 @@ footer {
     0% { opacity: 0.6; }
     50% { opacity: 1; }
     100% { opacity: 0.6; }
+}
+
+/* Login Page Styles */
+.login-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--c-background);
+    padding: 2rem;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 1000px;
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.login-content {
+    display: flex;
+    min-height: 600px;
+}
+
+.login-welcome {
+    flex: 1;
+    background: linear-gradient(135deg, var(--c-primary) 0%, var(--c-primary-light) 100%);
+    color: white;
+    padding: 4rem 3rem;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.welcome-content {
+    position: relative;
+    z-index: 2;
+}
+
+.welcome-content h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.welcome-content p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.decorative-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.circle-1, .circle-2 {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.circle-1 {
+    width: 150px;
+    height: 150px;
+    top: -75px;
+    right: -75px;
+}
+
+.circle-2 {
+    width: 100px;
+    height: 100px;
+    bottom: -50px;
+    left: -50px;
+}
+
+.wave-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='rgba(255, 255, 255, 0.1)' d='M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+    background-size: cover;
+    background-position: center;
+    opacity: 0.2;
+}
+
+.login-form-container {
+    flex: 1;
+    padding: 4rem 3rem;
+    background: white;
+}
+
+.login-form-content {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.login-form-content h2 {
+    color: var(--c-secondary);
+    font-size: 1.875rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+}
+
+.login-form .input-field {
+    position: relative;
+}
+
+.login-form .form-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.login-form .form-group label {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--c-secondary);
+    z-index: 2;
+    margin: 0;
+    pointer-events: none;
+}
+
+.login-form .form-group input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: white;
+    position: relative;
+    z-index: 1;
+}
+
+.login-form .form-group input:focus {
+    outline: none;
+    border-color: var(--c-primary);
+    box-shadow: 0 0 0 3px rgba(224, 122, 95, 0.2);
+}
+
+.login-form .form-group input::placeholder {
+    color: #a0aec0;
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.remember-me input[type="checkbox"] {
+    accent-color: var(--c-primary);
+}
+
+.forgot-password {
+    color: var(--c-accent);
+    text-decoration: none;
+    font-size: 0.875rem;
+}
+
+.forgot-password:hover {
+    color: var(--c-accent-dark);
+    text-decoration: underline;
+}
+
+.sign-in-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--c-primary);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.sign-in-btn:hover {
+    background: var(--c-primary-dark);
+}
+
+.register-link {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.register-link p {
+    color: var(--c-text);
+}
+
+.register-link a {
+    color: var(--c-primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.register-link a:hover {
+    color: var(--c-primary-dark);
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .login-content {
+        flex-direction: column;
+    }
+    
+    .login-welcome {
+        padding: 2rem;
+    }
+    
+    .login-form-container {
+        padding: 2rem;
+    }
 }

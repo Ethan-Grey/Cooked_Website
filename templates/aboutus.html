@@ -6,74 +6,99 @@
 
 {% block content %}
 
-
-
-<!-- HERO -->
-
-<section class="section-padding mt-5">
-    <div class="container py-5 text-center">
-        <div class="row">
-            <div class="col-12 mb-1">
-                <div class="section-title pb-5">
-                    <h1 class="display-4 fw-semibold text-uppercase">about us</h1>
-                    <div class="line"></div>
-                    <p>Our mission is to provide high-quality recipes, with a focus on the best go to ingredients.</p>
-                </div>
+<!-- Hero Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
+                <h1 class="display-4 fw-bold mb-4">About Cooked</h1>
+                <p class="lead mb-4">Welcome to Cooked, your ultimate destination for culinary inspiration and cooking expertise. We're passionate about bringing people together through the joy of cooking.</p>
             </div>
-        </div> 
+            <div class="col-lg-6" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
+                <img src="/static/images/about-hero.jpg" alt="About Cooked" class="img-fluid rounded shadow-lg">
+            </div>
+        </div>
     </div>
 </section>
 
-<!-- ABOUT US -->
-
-<section id="aboutus" class="section-padding">
+<!-- Our Mission -->
+<section class="py-5">
     <div class="container">
-        <div class="row">
-            <div class="col-6 d-flex align-items-center justify-content-center" data-aos="fade-right">
-                <img src="/static/images/person1.webp" alt="" style="width: 300px; height: 300px;">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center" data-aos="fade-up" data-aos-duration="1000">
+                <h2 class="display-5 mb-4">Our Mission</h2>
+                <p class="lead">To inspire home cooks of all skill levels to create delicious, memorable meals and share their culinary journey with others.</p>
             </div>
-            <div class="col-6 d-flex align-items-center" data-aos="fade-left" data-aos-delay="100">
-                <div class="container">
-                    <h1>Michael Thompson</h1>
-                    <h5>Chief Financial Officer</h5>
-                    <p>Oversees the financial operations of the e-commerce website, including budgeting, forecasting, financial planning, and analysis. Ensures the financial health and sustainability of the business.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Features -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="0">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="bi bi-book display-4 text-primary mb-3"></i>
+                        <h3>Recipe Collection</h3>
+                        <p>Access hundreds of carefully curated recipes from experienced chefs and home cooks.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="bi bi-people display-4 text-primary mb-3"></i>
+                        <h3>Community</h3>
+                        <p>Join a vibrant community of food lovers sharing tips, tricks, and culinary experiences.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="bi bi-star display-4 text-primary mb-3"></i>
+                        <h3>Expert Tips</h3>
+                        <p>Learn from professional chefs through detailed guides and video tutorials.</p>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="row mt-5">
-            <div class="col-6 d-flex align-items-center" data-aos="fade-right" data-aos-delay="100">
-                <div class="container" style="text-align: right;">
-                    <h1>James Bennett</h1>
-                    <h5>Chief Technology Officer</h5>
-                    <p>In charge of the website's technical aspects, ensuring the platform is secure, scalable, and runs smoothly. Manages the IT team and technology-related decisions.</p>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5" data-aos="fade-down" data-aos-duration="1000">Meet Our Team</h2>
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="0">
+                <div class="card border-0 shadow-sm">
+                    <img src="/static/images/chef1.jpg" class="card-img-top" alt="Chef 1">
+                    <div class="card-body text-center">
+                        <h4>John Smith</h4>
+                        <p class="text-muted">Head Chef</p>
+                    </div>
                 </div>
             </div>
-            <div class="col-6 d-flex align-items-center justify-content-center" data-aos="fade-down" >
-                <img src="/static/images/person2.webp" alt="" style="width: 300px; height: 300px;">
-            </div>
-        </div>
-        <div class="row mt-5">
-            <div class="col-6 d-flex align-items-center justify-content-center" data-aos="fade-left">
-                <img src="/static/images/person4.png" alt="" style="width: 300px; height: 300px;">
-            </div>
-            <div class="col-6 d-flex align-items-center" data-aos="fade-left" data-aos-delay="100">
-                <div class="container">
-                    <h1>David Anderson</h1>
-                    <h5>Head of Operations</h5>
-                    <p>Manages the day-to-day operations of the e-commerce business, including logistics, supply chain management, and order fulfillment. Ensures efficient and effective operational processes.</p>
+            <div class="col-md-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+                <div class="card border-0 shadow-sm">
+                    <img src="/static/images/chef2.jpg" class="card-img-top" alt="Chef 2">
+                    <div class="card-body text-center">
+                        <h4>Sarah Johnson</h4>
+                        <p class="text-muted">Pastry Chef</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row mt-5">
-            <div class="col-6 d-flex align-items-center" data-aos="fade-right" data-aos-delay="100">
-                <div class="container" style="text-align: right;">
-                    <h1>Emily Carter</h1>
-                    <h5>Chief Marketing Officer</h5>
-                    <p>Responsible for overseeing the planning, development, and execution of the e-commerce website's marketing and advertising initiatives.</p>
+            <div class="col-md-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
+                <div class="card border-0 shadow-sm">
+                    <img src="/static/images/chef3.jpg" class="card-img-top" alt="Chef 3">
+                    <div class="card-body text-center">
+                        <h4>Michael Chen</h4>
+                        <p class="text-muted">Recipe Developer</p>
+                    </div>
                 </div>
-            </div>
-            <div class="col-6 d-flex align-items-center justify-content-center" data-aos="fade-up">
-                <img src="/static/images/person3.png" alt="" style="width: 300px; height: 300px;">
             </div>
         </div>
     </div>
