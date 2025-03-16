@@ -100,11 +100,6 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#about">
-                    <i class="bi bi-person me-1"></i> About
-                </a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="#favorites">
                     <i class="bi bi-heart me-1"></i> Favorites
                 </a>
@@ -159,22 +154,16 @@
                     </div>
                     <div class="card-body">
                         <div class="row text-center g-3">
-                            <div class="col-4">
+                            <div class="col-6">
                                 <div class="p-3 border rounded">
                                     <h3 class="m-0 text-forest-green">{{ recipes|length }}</h3>
                                     <small class="text-muted">Recipes</small>
                                 </div>
                             </div>
-                            <div class="col-4">
+                            <div class="col-6">
                                 <div class="p-3 border rounded">
-                                    <h3 class="m-0 text-oak-brown">0</h3>
-                                    <small class="text-muted">Liked</small>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="p-3 border rounded">
-                                    <h3 class="m-0 text-dark-forest">0</h3>
-                                    <small class="text-muted">Saved</small>
+                                    <h3 class="m-0 text-oak-brown">{{ favorite_recipes|length }}</h3>
+                                    <small class="text-muted">Favorites</small>
                                 </div>
                             </div>
                         </div>
@@ -308,8 +297,65 @@
                     <div class="card-body">
                         {% if favorite_recipes %}
                             <div class="row g-4">
-                                <!-- Loop through favorite recipes here -->
-                                <p>Your favorite recipes will appear here</p>
+                                {% for recipe in favorite_recipes %}
+                                    <div class="col-md-6">
+                                        <div class="card h-100 recipe-card shadow-sm">
+                                            <div class="position-relative">
+                                                {% if recipe.image %}
+                                                    <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.recipename }}" style="height: 300px; object-fit: cover;">
+                                                {% else %}
+                                                    <div class="d-flex align-items-center justify-content-center" style="height: 220px;">
+                                                        <i class="bi bi-card-image text-muted" style="font-size: 3rem;"></i>
+                                                    </div>
+                                                {% endif %}
+                                                <span class="position-absolute top-0 end-0 badge bg-forest-green m-2 py-2 px-3">
+                                                    {{ recipe.recipetype.recipetype }}
+                                                </span>
+                                            </div>
+                                            
+                                            <div class="card-body">
+                                                <h5 class="card-title fw-bold">{{ recipe.recipename }}</h5>
+                                                <p class="text-muted small">
+                                                    <i class="bi bi-person-circle me-1"></i>By {{ recipe.madeby.username }}
+                                                </p>
+                                                <p class="card-text">{{ recipe.description|truncatechars:80 }}</p>
+                                                
+                                                <!-- Five-star Rating (Static) -->
+                                                <div class="five-star-rating d-flex mb-3">
+                                                    <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                                    </svg>
+                                                    <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                                    </svg>
+                                                    <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                                    </svg>
+                                                    <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                                    </svg>
+                                                    <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill="#9C1F1E" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card-footer border-top d-flex justify-content-center align-items-center pb-3">
+                                                <div class="action-buttons">
+                                                    <form action="{% url 'recipes:remove_from_favorites' recipe_id=recipe.id %}" method="POST" style="display:inline;">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn btn-sm btn-outline-danger me-2">
+                                                            <i class="bi bi-heart-fill"></i> Remove
+                                                        </button>
+                                                    </form>
+                                                    <a href="{% url 'recipes:detail' category=recipe.recipetype.recipetype|lower slug=recipe.slug %}" class="btn btn-sm btn-forest-green">
+                                                        View Recipe
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
                             </div>
                         {% else %}
                             <div class="text-center py-5">
@@ -318,6 +364,9 @@
                                 </div>
                                 <h4 class="mb-2">No Favorites Yet</h4>
                                 <p class="text-muted mb-4">Start adding your favorite recipes to your collection!</p>
+                                <a href="{% url 'recipes:all_recipes' %}" class="btn btn-forest-green">
+                                    <i class="bi bi-search me-2"></i>Browse Recipes
+                                </a>
                             </div>
                         {% endif %}
                     </div>

@@ -36,10 +36,19 @@ def edit_profile_view(request):
 def profile_view(request):
     user = request.user  # Get the current logged-in user
     
-    # CHANGE: Filter recipes by the user object instead of username
+    # Filter recipes by the user object instead of username
     recipes = Recipe.objects.filter(madeby=user)
     
-    return render(request, 'users/profile_view.html', {'user': user, 'recipes': recipes})
+    # Get favorite recipes
+    favorite_recipes = user.favorite_recipes.all()
+    
+    context = {
+        'user': user, 
+        'recipes': recipes,
+        'favorite_recipes': favorite_recipes
+    }
+    
+    return render(request, 'users/profile_view.html', context)
 
 # You have two user_profile functions - you may want to resolve this duplication
 @login_required 

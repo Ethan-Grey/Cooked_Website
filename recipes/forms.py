@@ -4,7 +4,7 @@ from . import models
 class CreateRecipe(forms.ModelForm):
     class Meta:
         model = models.Recipe
-        exclude = ['slug', 'madeby']  # Exclude both slug and madeby
+        exclude = ['slug', 'madeby', 'favorites']  # Exclude both slug and madeby
         labels = {
             'recipename': 'Recipe Title',
             'recipetype': 'Category',

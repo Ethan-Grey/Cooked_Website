@@ -104,9 +104,6 @@ def delete_recipe(request, recipe_id):
     messages.success(request, f"'{recipe_name}' has been deleted successfully.")
     return redirect('users:profile_view')
 
-
-
-
 def search(request):
     query = request.GET.get('q', '')
     recipe_types = RecipeType.objects.all()
@@ -129,3 +126,29 @@ def search(request):
     }
     
     return render(request, 'recipes/search_results.html', context)
+
+@login_required
+def add_to_favorites(request, recipe_id):
+    recipe = get_object_or_404(Recipe, id=recipe_id)
+    if request.user in recipe.favorites.all():
+        # Already in favorites, do nothing
+        messages.info(request, f"'{recipe.recipename}' is already in your favorites.")
+    else:
+        recipe.favorites.add(request.user)
+        messages.success(request, f"'{recipe.recipename}' added to your favorites!")
+    
+    # Redirect back to the recipe detail page
+    return redirect('recipes:detail', category=recipe.recipetype.recipetype.lower(), slug=recipe.slug)
+
+@login_required
+def remove_from_favorites(request, recipe_id):
+    recipe = get_object_or_404(Recipe, id=recipe_id)
+    if request.user in recipe.favorites.all():
+        recipe.favorites.remove(request.user)
+        messages.success(request, f"'{recipe.recipename}' removed from your favorites.")
+    else:
+        # Not in favorites, do nothing
+        messages.info(request, f"'{recipe.recipename}' is not in your favorites.")
+    
+    # Redirect back to the recipe detail page
+    return redirect('recipes:detail', category=recipe.recipetype.recipetype.lower(), slug=recipe.slug)

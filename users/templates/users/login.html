@@ -22,8 +22,14 @@
                 {% if request.GET.next %}
                     <input type="hidden" name="next" value={{ request.GET.next }}>
                 {% endif %}
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <a href="{% url 'users:password_reset' %}" class="text-forest-green">Forgot password?</a>
+                </div>
                 <button class="btn btn-secondary">Login</button>
             </form>
+            <div class="mt-4 text-center">
+                <p>Don't have an account? <a href="{% url 'users:register_email_password' %}" class="text-forest-green">Register here</a></p>
+            </div>
         </div>
     </div>
 </section>

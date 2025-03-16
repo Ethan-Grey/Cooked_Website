@@ -23,6 +23,7 @@ class Recipe(models.Model):
     image = models.ImageField(upload_to='recipes/')
     slug = models.SlugField(blank=True)
     recipetype = models.ForeignKey(RecipeType, related_name='recipes', on_delete=models.CASCADE)
+    favorites = models.ManyToManyField(User, related_name='favorite_recipes', blank=True)
     
     def save(self, *args, **kwargs):
         if not self.slug:
