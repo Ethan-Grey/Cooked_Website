@@ -9,7 +9,7 @@ def recipes(request):
 def recipe_categories(request):
     return {
         'filtered_recipe_types': RecipeType.objects.filter(
-            recipetype__in=['Breakfast', 'Lunch', 'Dinner']     
+            recipetype__in=['Breakfast', 'Lunch', 'Dinner', 'Drinks', 'Desserts']     
         ),
         'health_filtered_recipe_types': RecipeType.objects.filter(          # filter for categories in recipetype model
             recipetype__in=["Keto", 'Vegetarian']

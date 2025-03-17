@@ -142,4 +142,28 @@
         </div>
     </div>
 </section> {% endcomment %}
+
+<h2>Leave a Review</h2>
+{% if user.is_authenticated %}
+    <form method="post" action="{% url 'recipes:add_review' recipe.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit Review</button>
+    </form>
+{% else %}
+    <p><a href="{% url 'login' %}">Login</a> to leave a review.</p>
+{% endif %}
+
+<h2>Reviews</h2>
+{% for review in recipe.reviews.all %}
+    <div>
+        <strong>{{ review.user.username }}</strong> ({{ review.rating }}/5)
+        <p>{{ review.comment }}</p>
+        <small>Posted on {{ review.created_at }}</small>
+    </div>
+    <hr>
+{% empty %}
+    <p>No reviews yet.</p>
+{% endfor %}
+
 {% endblock %}

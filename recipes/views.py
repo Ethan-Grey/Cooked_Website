@@ -3,11 +3,30 @@ from .models import Recipe, RecipeType
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from . import forms
-from .forms import CreateRecipe
+from .forms import CreateRecipe, ReviewForm
 from . import models
 from django.db.models import Q
 
 # Create your views here.
+
+def add_review(request, recipe_id):
+    recipe = get_object_or_404(Recipe, id=recipe_id)
+    
+    if request.method == "POST":
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.recipe = recipe
+            review.save()
+            return redirect('recipes:detail', category=recipe.recipetype.recipetype, slug=recipe.slug)
+    else:
+        form = ReviewForm()
+
+    return render(request, 'recipes/add_review.html', {'form': form, 'recipe': recipe})
+
+
+
+
 def recipe_category(request, category):
     # No changes needed here
     recipe_type = get_object_or_404(RecipeType, recipetype__iexact=category)
@@ -104,28 +123,31 @@ def delete_recipe(request, recipe_id):
     messages.success(request, f"'{recipe_name}' has been deleted successfully.")
     return redirect('users:profile_view')
 
+
+
 def search(request):
-    query = request.GET.get('q', '')
-    recipe_types = RecipeType.objects.all()
+    query = request.GET.get('q', '') # gets the search query
+    recipe_types = RecipeType.objects.all() # gets all recipe objects and sets it to recipe_types
     
-    if query:
-        # Search in recipe name, description, and ingredients
+    if query: # if the search query exists
         results = Recipe.objects.filter(
-            Q(recipename__icontains=query) |
-            Q(description__icontains=query) |
-            Q(ingredients__icontains=query)
+            Q(recipename__icontains=query) | # this | means itll include the results from these aswell   # checks if the users search is in the recipe name
+            Q(description__icontains=query) |   # checks if its in the description
+            Q(ingredients__icontains=query)     # checks if its in the ingredients
         ).distinct()
     else:
-        results = Recipe.objects.none()
+        results = Recipe.objects.none() # else incase there is no objects in the recipes. meaning nor ecipe is made
     
-    context = {
-        'query': query,
-        'results': results,
-        'recipe_types': recipe_types,
-        'title': f'Search Results for "{query}"'
+    context = { # dictionary
+        'query': query, # stores the users search
+        'results': results, # stores the filtered recipe objects
+        'recipe_types': recipe_types,   # gives the recipe categories
+        'title': f'Search Results for "{query}"'    # creates a title for the results
     }
     
-    return render(request, 'recipes/search_results.html', context)
+    return render(request, 'recipes/search_results.html', context) # puts the context which is the dictionary in the search_results.html
+
+
 
 @login_required
 def add_to_favorites(request, recipe_id):

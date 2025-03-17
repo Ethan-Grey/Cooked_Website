@@ -12,6 +12,7 @@ urlpatterns = [
     path('favorite/<int:recipe_id>/', views.add_to_favorites, name='add_to_favorites'),
     path('unfavorite/<int:recipe_id>/', views.remove_from_favorites, name='remove_from_favorites'),
     # Generic patterns with string/slug parameters should come last
+    path('recipe/<int:recipe_id>/review/', views.add_review, name='add_review'),
     path('<str:category>/', views.recipe_category, name='category'),
     path('<str:category>/<slug:slug>/', views.recipe_detail, name='detail'),
 ]
