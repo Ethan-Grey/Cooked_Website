@@ -17,12 +17,14 @@ def add_review(request, recipe_id):
         if form.is_valid():
             review = form.save(commit=False)
             review.recipe = recipe
+            review.user = request.user
             review.save()
+            messages.success(request, "Your review has been added successfully!")
             return redirect('recipes:detail', category=recipe.recipetype.recipetype, slug=recipe.slug)
-    else:
-        form = ReviewForm()
-
-    return render(request, 'recipes/add_review.html', {'form': form, 'recipe': recipe})
+        else:
+            messages.error(request, "There was an error with your review. Please try again.")
+    
+    return redirect('recipes:detail', category=recipe.recipetype.recipetype, slug=recipe.slug)
 
 
 
@@ -46,10 +48,12 @@ def recipe_detail(request, category, slug):
     recipe_type = get_object_or_404(RecipeType, recipetype__iexact=category)
     recipe = get_object_or_404(Recipe, slug=slug, recipetype=recipe_type)
     recipe_types = RecipeType.objects.all()
+    form = ReviewForm()  # Create an instance of the ReviewForm
     
     context = {
         'recipe': recipe,
-        'recipe_types': recipe_types
+        'recipe_types': recipe_types,
+        'form': form  # Add the form to the context
     }
     
     return render(request, 'recipes/recipe_detail.html', context)

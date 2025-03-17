@@ -533,3 +533,77 @@ footer {
         padding: 2rem;
     }
 }
+
+/* Star Rating Styles */
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 0.3rem;
+    font-size: 2rem;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+}
+
+.star-rating input {
+    display: none;
+}
+
+.star-rating label.star {
+    cursor: pointer;
+    color: #ddd;
+    font-size: 2.5rem;
+    transition: 0.2s ease;
+}
+
+.star-rating input:checked ~ label.star,
+.star-rating input:hover ~ label.star {
+    color: #FFD700;
+}
+
+.star-rating label.star:hover,
+.star-rating label.star:hover ~ label.star {
+    color: #FFD700;
+}
+
+/* Review form styling */
+.review-form textarea {
+    resize: none;
+    border: 1px solid #e2e8f0;
+}
+
+.review-form .form-label {
+    font-weight: 600;
+    color: var(--c-text);
+}
+
+/* Review styles */
+.review-item {
+    position: relative;
+    padding: 0 0 10px 0;
+}
+
+.review-item .reviewer-avatar img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+.star-display {
+    letter-spacing: 2px;
+}
+
+.star-display .text-warning {
+    color: #FF5722 !important; /* Orange-red color for the stars */
+}
+
+.review-item p {
+    margin-left: 65px;
+    color: #333;
+    line-height: 1.5;
+}
+
+.review-item .read-more {
+    margin-left: 65px;
+    color: #666;
+    font-size: 0.85rem;
+}
