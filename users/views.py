@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login as auth_login, logout
 from .forms import UserEmailPasswordForm, UserProfileForm
-from recipes.models import Recipe
+from recipes.models import Recipe, Review
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -42,10 +42,14 @@ def profile_view(request):
     # Get favorite recipes
     favorite_recipes = user.favorite_recipes.all()
     
+    # Get user reviews
+    user_reviews = Review.objects.filter(user=user).select_related('recipe')
+    
     context = {
         'user': user, 
         'recipes': recipes,
-        'favorite_recipes': favorite_recipes
+        'favorite_recipes': favorite_recipes,
+        'user_reviews': user_reviews
     }
     
     return render(request, 'users/profile_view.html', context)

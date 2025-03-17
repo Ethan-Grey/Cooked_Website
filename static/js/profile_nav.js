@@ -1,11 +1,9 @@
-
-
 document.addEventListener('DOMContentLoaded', function() {
     // Get all tab links
     const tabLinks = document.querySelectorAll('.profile-nav .nav-link');
     
     // Get all content sections
-    const contentSections = document.querySelectorAll('#recipes, #about, #favorites');
+    const contentSections = document.querySelectorAll('#recipes, #favorites, #reviews');
     
     // Add click event listener to each tab link
     tabLinks.forEach(link => {
