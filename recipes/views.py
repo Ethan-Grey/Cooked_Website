@@ -119,13 +119,16 @@ def delete_recipe(request, recipe_id):
     # Check if the current user is the recipe creator
     if recipe.madeby != request.user:
         messages.error(request, "You cannot delete a recipe that you didn't create.")
-        return redirect('users:profile')
+        return redirect('users:profile_view')
     
-    # Delete the recipe immediately
-    recipe_name = recipe.recipename
-    recipe.delete()
-    messages.success(request, f"'{recipe_name}' has been deleted successfully.")
-    return redirect('users:profile_view')
+    if request.method == "POST":
+        # Recipe deletion
+        recipe_name = recipe.recipename
+        recipe.delete()
+        messages.success(request, f"'{recipe_name}' has been deleted successfully.")
+        return redirect('users:profile_view')
+    
+    return render(request, 'recipes/confirm_delete.html', {'recipe': recipe}) # return confirmation template
 
 
 
