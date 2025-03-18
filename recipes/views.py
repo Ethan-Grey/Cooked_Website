@@ -6,6 +6,7 @@ from . import forms
 from .forms import CreateRecipe, ReviewForm
 from . import models
 from django.db.models import Q
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -118,6 +119,11 @@ def delete_recipe(request, recipe_id):
     
     # Check if the current user is the recipe creator
     if recipe.madeby != request.user:
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({
+                'success': False,
+                'message': "You cannot delete a recipe that you didn't create."
+            })
         messages.error(request, "You cannot delete a recipe that you didn't create.")
         return redirect('users:profile_view')
     
@@ -125,10 +131,23 @@ def delete_recipe(request, recipe_id):
         # Recipe deletion
         recipe_name = recipe.recipename
         recipe.delete()
+        
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({
+                'success': True,
+                'message': f"'{recipe_name}' has been deleted successfully."
+            })
+        
         messages.success(request, f"'{recipe_name}' has been deleted successfully.")
         return redirect('users:profile_view')
     
-    return render(request, 'recipes/confirm_delete.html', {'recipe': recipe}) # return confirmation template
+    # If it's a GET request and not AJAX, show the confirmation page
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return JsonResponse({
+            'success': False,
+            'message': "Invalid request method."
+        })
+    return render(request, 'recipes/confirm_delete.html', {'recipe': recipe})
 
 
 
