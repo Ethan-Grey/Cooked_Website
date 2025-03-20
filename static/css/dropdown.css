@@ -119,4 +119,112 @@
 /* Add visual indicator for active dropdown toggle */
 .nav-item .dropdown-toggle.active::after {
   color: var(--c-primary);
+}
+
+/* Mobile dropdown adjustments */
+@media (max-width: 991px) {
+  /* Make dropdown more visible on mobile */
+  .dropdown-menu,
+  .mobile-dropdown {
+    position: static !important;
+    width: 100%;
+    background-color: var(--c-primary-dark) !important;
+    transform: none !important;
+    opacity: 1;
+    display: none;
+    margin: 0 0 5px 0 !important;
+    padding: 0;
+    border: none !important;
+    box-shadow: none;
+  }
+  
+  /* Show dropdown when toggled */
+  .dropdown-menu.show,
+  .mobile-dropdown.show {
+    display: block;
+  }
+  
+  /* Adjust dropdown items padding and color */
+  .dropdown-item,
+  .mobile-dropdown .dropdown-item {
+    padding: 0.7rem 1.5rem;
+    color: white !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  /* Add hover effect for dropdown items */
+  .dropdown-item:hover,
+  .mobile-dropdown .dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: var(--c-accent-light) !important;
+  }
+  
+  /* Make dropdown headers stand out */
+  .dropdown-menu .dropdown-header,
+  .mobile-dropdown .dropdown-header {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7) !important;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 0.7rem 1.5rem;
+    font-weight: 600;
+  }
+  
+  /* Override any bootstrap defaults */
+  .dropdown-menu,
+  .mobile-dropdown,
+  .dropdown .dropdown-menu,
+  .nav-item .dropdown-menu {
+    background-color: var(--c-primary-dark) !important; 
+  }
+  
+  /* Force dropdown items to inherit mobile styles */
+  .dropdown-menu .dropdown-item,
+  .mobile-dropdown .dropdown-item,
+  .navbar .dropdown-item {
+    background-color: transparent !important;
+    color: white !important;
+  }
+  
+  /* Don't animate the dropdown toggle arrow on mobile */
+  .dropdown-toggle::after {
+    margin-left: auto;
+    float: right;
+    margin-top: 0.8rem;
+    color: white;
+  }
+  
+  /* User dropdown styling for mobile */
+  .user-dropdown .dropdown-menu {
+    width: 100%;
+    position: static !important;
+    margin-top: 0.5rem;
+    box-shadow: none;
+    border: none;
+    background-color: var(--c-primary-dark) !important;
+  }
+  
+  /* Style user dropdown icons */
+  .user-dropdown .dropdown-item i {
+    color: rgba(255, 255, 255, 0.8) !important;
+    margin-right: 10px;
+  }
+  
+  /* Remove hover effect side padding increase */
+  .dropdown-item:hover {
+    padding-left: 1.5rem;
+  }
+  
+  /* Fix active nav item styling */
+  .nav-item .nav-link.active, 
+  .nav-item .dropdown-toggle.active {
+    color: var(--c-accent-light) !important;
+    font-weight: 600;
+    background-color: transparent !important;
+  }
+  
+  /* Active dropdown item */
+  .dropdown-item.active {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: var(--c-accent-light) !important;
+  }
 } 

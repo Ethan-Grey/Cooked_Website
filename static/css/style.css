@@ -55,6 +55,45 @@ body {
     background-position: center center;
     height: 100vh;
     width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.181);
+    z-index: 1;
+}
+
+#hero .hero-content {
+    position: relative;
+    z-index: 2;
+    color: var(--c-text);
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.2);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+#hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    color: var(--c-primary-dark);
+}
+
+#hero h3 {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: var(--c-primary);
 }
 
 /* Navbar */
@@ -65,6 +104,7 @@ body {
     left: 0;
     width: 100%;
     padding: 15px 0;
+    z-index: 1000;
 }
 
 .navbar-brand, .nav-link {
@@ -606,4 +646,184 @@ footer {
     margin-left: 65px;
     color: #666;
     font-size: 0.85rem;
+}
+
+/* Mobile Navbar Styles - Always apply these regardless of page */
+@media (max-width: 991px) {
+    body {
+        padding-top: 70px;
+    }
+    
+    /* Fix navbar at top with dark background for mobile */
+    .navbar {
+        padding: 10px 0;
+        background: var(--c-primary) !important;
+        position: fixed;
+        z-index: 1000;
+    }
+    
+    /* All navbar text should be white on mobile */
+    .navbar-brand, 
+    .navbar .nav-link,
+    .navbar-nav .nav-link {
+        color: white !important;
+    }
+    
+    .navbar-brand:hover,
+    .navbar .nav-link:hover,
+    .navbar-nav .nav-link:hover {
+        color: var(--c-accent-light) !important;
+    }
+    
+    /* Fix collapsed navbar appearance */
+    .navbar-collapse {
+        padding: 1rem 0;
+        background-color: var(--c-primary);
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+        margin-top: 10px;
+        padding-left: 0 !important;
+        margin-left: 0 !important;
+    }
+    
+    /* Force all dropdown backgrounds to be dark */
+    .navbar .dropdown-menu,
+    .navbar .nav-item .dropdown-menu,
+    .navbar .dropdown .dropdown-menu,
+    .mobile-dropdown {
+        background-color: var(--c-primary-dark) !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+    
+    /* Force all dropdown items to have white text */
+    .navbar .dropdown-item,
+    .navbar .dropdown-menu .dropdown-item,
+    .mobile-dropdown .dropdown-item {
+        color: white !important;
+        background-color: transparent !important;
+    }
+    
+    /* Ensure hover states show properly */
+    .navbar .dropdown-item:hover,
+    .navbar .dropdown-menu .dropdown-item:hover,
+    .mobile-dropdown .dropdown-item:hover {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        color: var(--c-accent-light) !important;
+    }
+    
+    /* Burger menu button style */
+    .navbar-toggler {
+        padding: 0.5rem;
+        background-color: white;
+        border: 1px solid rgba(0,0,0,0.1);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    /* Burger icon color */
+    .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2833, 37, 41, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+    
+    /* Stack menu items vertically with proper spacing */
+    .navbar-nav {
+        padding: 0.5rem 1rem;
+    }
+    
+    /* Remove left margin from dropdown toggles */
+    .nav-link.dropdown-toggle.ms-3 {
+        margin-left: 0 !important;
+    }
+    
+    /* Align search form properly */
+    .navbar form.d-flex {
+        padding: 0.5rem 1rem;
+        margin-right: 0 !important;
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Fix user dropdown position */
+    .user-dropdown {
+        padding: 0.5rem 1rem;
+    }
+    
+    /* User icon color */
+    .user-dropdown svg {
+        fill: white;
+    }
+    
+    /* Add border between nav items for visual separation */
+    .navbar-nav .nav-item:not(:last-child) {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Make menu items take full width */
+    .nav-item, .nav-link {
+        width: 100%;
+        padding: 0.7rem 0;
+    }
+    
+    /* Ensure dropdowns appear below their toggle with proper styling */
+    .dropdown-menu {
+        margin-top: 0;
+        margin-left: 1rem;
+        border-radius: 0;
+        box-shadow: none;
+        border-left: 2px solid white;
+        padding-left: 0;
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    /* Ensure hero section starts below fixed navbar */
+    #hero {
+        padding-top: 60px;
+        background-position: center top;
+    }
+    
+    /* Add space between menu items */
+    .navbar-nav .nav-item {
+        margin-bottom: 5px;
+    }
+    
+    /* Make the search form full width */
+    form.d-flex {
+        width: 100%;
+    }
+    
+    /* Fix collapsed navbar z-index */
+    .navbar-collapse.show {
+        z-index: 1001;
+    }
+    
+    /* Align items in user dropdown */
+    .user-dropdown .dropdown-menu {
+        width: 100%;
+        background-color: var(--c-primary-dark);
+    }
+    
+    /* Style hovering on nav items */
+    .nav-link:hover, .dropdown-item:hover {
+        color: var(--c-accent-light) !important;
+    }
+    
+    /* Dropdown dividers */
+    .dropdown-divider {
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Fix navbar brand color */
+    .navbar-brand {
+        color: white !important;
+    }
+    
+    /* Make the entire navbar solid dark when toggled */
+    .navbar.navbar-expand-lg {
+        background-color: var(--c-primary) !important;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    
+    /* Responsive section padding */
+    .section-padding {
+        padding-top: 70px;
+        padding-bottom: 70px;
+    }
 }
