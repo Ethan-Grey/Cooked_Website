@@ -28,8 +28,18 @@ class UserEmailPasswordForm(forms.Form):
         }),
         label='Confirm Password'  # Custom label for password2
     )
-
     
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get('password1')
+        password2 = cleaned_data.get('password2')
+        
+        if password1 and password2 and password1 != password2:
+            self.add_error('password2', "Passwords don't match")
+            
+        return cleaned_data
+
+
 
 class UserProfileForm(forms.ModelForm):
     class Meta:

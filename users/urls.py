@@ -6,7 +6,7 @@ app_name = 'users'
 
 urlpatterns = [
     path('register/', views.user_register, name='register_email_password'),
-    path('register/profile/', views.user_profile, name='register_profile'),  # Keep this for the registration profile form
+    path('register/profile/', views.register_profile, name='register_profile'),  # Updated to use the renamed view
     path('profile/', views.profile_view, name='profile_view'),  # For displaying the user details and created recipes
     path('login/', views.user_login, name='login'),
     path('logout/', views.user_logout, name='logout'),

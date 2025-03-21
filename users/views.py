@@ -80,33 +80,81 @@ def user_register(request):
             if form1.is_valid():
                 email = form1.cleaned_data['email']
                 password = form1.cleaned_data['password1']
+                
+                print(f"Storing in session - Email: {email}, Password: {'*' * len(password)}")
+                
                 # Save the email and password in the session to use in the next form
                 request.session['email'] = email
                 request.session['password'] = password
+                request.session.modified = True  # Make sure session is saved
+                
+                print("Session data stored, redirecting to profile registration")
                 return redirect('users:register_profile')  # Redirect to the second form
+            else:
+                print("Form errors:", form1.errors)
         else:
+            print("Form submission without email_password_form in POST data")
             form1 = UserEmailPasswordForm()
-
     else:
         form1 = UserEmailPasswordForm()
 
     return render(request, 'users/register_email_password.html', {"form1": form1})
 
 
-def user_profile(request):
+def register_profile(request):
     if request.method == "POST":
+        # Add debug print statement 
+        print("Form submitted:", request.POST)
+        print("Session data:", request.session.items())
+        
         form2 = UserProfileForm(request.POST)
         if form2.is_valid():
-            # Create the user with the data from both forms
-            email = request.session['email']
-            password = request.session['password']
-            user = form2.save(commit=False)
-            user.email = email
-            user.set_password(password)
-            user.save()
-            auth_login(request, user)  # Log the user in after registration
-            return redirect('users:profile_view')  # Redirect to the profile view after successful registration
+            try:
+                # Create the user with the data from both forms
+                email = request.session.get('email')
+                password = request.session.get('password')
+                
+                print(f"Retrieved from session - Email: {email}, Password: {'*' * len(password) if password else 'None'}")
+                
+                if not email or not password:
+                    # Handle case where session data is missing
+                    print("Missing session data, redirecting to first step")
+                    return redirect('users:register_email_password')
+                    
+                user = form2.save(commit=False)
+                user.email = email
+                user.set_password(password)
+                
+                print(f"About to save user with username: {user.username}, email: {user.email}")
+                
+                user.save()
+                
+                print(f"User saved with ID: {user.id}")
+                
+                # Clean up session data
+                if 'email' in request.session:
+                    del request.session['email']
+                if 'password' in request.session:
+                    del request.session['password']
+                
+                auth_login(request, user)  # Log the user in after registration
+                print(f"User logged in, redirecting to profile")
+                return redirect('users:profile_view')  # Redirect to the profile view after successful registration
+            except Exception as e:
+                print(f"Error creating user: {e}")
+                # Add error handling here as needed
+                return render(request, 'users/register_profile.html', {
+                    "form2": form2,
+                    "error": f"Error creating account: {str(e)}"
+                })
+        else:
+            print("Form errors:", form2.errors)
     else:
+        # Check if we have the necessary session data
+        if 'email' not in request.session or 'password' not in request.session:
+            print("Session data missing on GET request")
+            return redirect('users:register_email_password')
+            
         form2 = UserProfileForm()
 
     return render(request, 'users/register_profile.html', {"form2": form2})
