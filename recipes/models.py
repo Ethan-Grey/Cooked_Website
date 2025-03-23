@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
+from django.db.models import Avg
 
 # Create your models here.
 
@@ -33,6 +34,12 @@ class Recipe(models.Model):
     def __str__(self):
         return self.recipename
     
+    @property
+    def average_rating(self):
+        avg = self.reviews.aggregate(Avg('rating'))['rating__avg']
+        if avg is not None:
+            return round(avg)
+        return 0
 
 
 class Review(models.Model):

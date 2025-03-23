@@ -73,6 +73,7 @@ TEMPLATES = [
                 'recipes.context_processors.recipe_types',
                 'recipes.context_processors.recipes',
                 'recipes.context_processors.recipe_categories',
+                'recipes.context_processors.reviews',
             ],
         },
     },

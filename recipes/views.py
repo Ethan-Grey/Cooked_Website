@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Recipe, RecipeType
+from .models import Recipe, RecipeType, Review
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from . import forms
 from .forms import CreateRecipe, ReviewForm
 from . import models
-from django.db.models import Q
+from django.db.models import Q, Avg
 from django.http import JsonResponse
 
 # Create your views here.
@@ -27,49 +27,61 @@ def add_review(request, recipe_id):
     
     return redirect('recipes:detail', category=recipe.recipetype.recipetype, slug=recipe.slug)
 
-
-
+def home(request):
+    # Get the 4 most recent recipes with their average ratings
+    recipes = Recipe.objects.annotate(
+        avg_rating=Avg('reviews__rating')
+    ).order_by('-id')[:4]
+    
+    context = {
+        'recipes': recipes
+    }
+    return render(request, 'home.html', context)
 
 def recipe_category(request, category):
-    # No changes needed here
     recipe_type = get_object_or_404(RecipeType, recipetype__iexact=category)
-    category_recipes = recipe_type.recipes.all()
-    recipe_types = RecipeType.objects.all()
+    # Get recipes for this category with their average ratings
+    category_recipes = Recipe.objects.filter(recipetype=recipe_type).annotate(
+        avg_rating=Avg('reviews__rating')
+    ).order_by('-id')
     
     context = {
         'category': recipe_type,
-        'category_recipes': category_recipes,
-        'recipe_types': recipe_types
+        'category_recipes': category_recipes
     }
-    
     return render(request, 'recipes/category.html', context)
 
 def recipe_detail(request, category, slug):
-    # No changes needed here
     recipe_type = get_object_or_404(RecipeType, recipetype__iexact=category)
     recipe = get_object_or_404(Recipe, slug=slug, recipetype=recipe_type)
     recipe_types = RecipeType.objects.all()
-    form = ReviewForm()  # Create an instance of the ReviewForm
+    form = ReviewForm()
+    
+    # Calculate average rating with proper rounding
+    avg_rating = recipe.reviews.aggregate(Avg('rating'))['rating__avg']
+    if avg_rating is not None:
+        avg_rating = round(avg_rating)
+    else:
+        avg_rating = 0
     
     context = {
         'recipe': recipe,
         'recipe_types': recipe_types,
-        'form': form  # Add the form to the context
+        'form': form,
+        'avg_rating': avg_rating
     }
     
     return render(request, 'recipes/recipe_detail.html', context)
 
 def all_recipes(request):
-    # No changes needed here
-    recipes = Recipe.objects.all()
-    recipe_types = RecipeType.objects.all()
+    # Get all recipes with their average ratings
+    recipes = Recipe.objects.annotate(
+        avg_rating=Avg('reviews__rating')
+    ).order_by('-id')
     
     context = {
-        'recipes': recipes,
-        'recipe_types': recipe_types,
-        'title': 'All Recipes'
+        'recipes': recipes
     }
-    
     return render(request, 'recipes/all_recipes.html', context)
 
 @login_required(login_url="/users/login/")
@@ -149,8 +161,6 @@ def delete_recipe(request, recipe_id):
         })
     return render(request, 'recipes/confirm_delete.html', {'recipe': recipe})
 
-
-
 def search(request):
     query = request.GET.get('q', '') # gets the search query
     recipe_types = RecipeType.objects.all() # gets all recipe objects and sets it to recipe_types
@@ -160,6 +170,8 @@ def search(request):
             Q(recipename__icontains=query) | # this | means itll include the results from these aswell   # checks if the users search is in the recipe name
             Q(description__icontains=query) |   # checks if its in the description
             Q(ingredients__icontains=query)     # checks if its in the ingredients
+        ).annotate(
+            avg_rating=Avg('reviews__rating')
         ).distinct()
     else:
         results = Recipe.objects.none() # else incase there is no objects in the recipes. meaning nor ecipe is made
@@ -172,8 +184,6 @@ def search(request):
     }
     
     return render(request, 'recipes/search_results.html', context) # puts the context which is the dictionary in the search_results.html
-
-
 
 @login_required
 def add_to_favorites(request, recipe_id):
@@ -200,3 +210,20 @@ def remove_from_favorites(request, recipe_id):
     
     # Redirect back to the recipe detail page
     return redirect('recipes:detail', category=recipe.recipetype.recipetype.lower(), slug=recipe.slug)
+
+@login_required
+def delete_review(request, review_id):
+    review = get_object_or_404(Review, id=review_id)
+    
+    # Ensure only the review author can delete it
+    if review.user != request.user:
+        messages.error(request, "You don't have permission to delete this review.")
+        return redirect('users:profile_view')
+    
+    if request.method == "POST":
+        recipe = review.recipe
+        review.delete()
+        messages.success(request, "Your review has been deleted successfully!")
+        return redirect('users:profile_view')
+    
+    return redirect('users:profile_view')

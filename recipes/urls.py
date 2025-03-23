@@ -15,4 +15,6 @@ urlpatterns = [
     path('recipe/<int:recipe_id>/review/', views.add_review, name='add_review'),
     path('<str:category>/', views.recipe_category, name='category'),
     path('<str:category>/<slug:slug>/', views.recipe_detail, name='detail'),
+    path('recipe/<int:recipe_id>/remove-from-favorites/', views.remove_from_favorites, name='remove_from_favorites'),
+    path('review/<int:review_id>/delete/', views.delete_review, name='delete_review'),
 ]
