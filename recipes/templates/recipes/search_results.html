@@ -25,7 +25,7 @@
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 {% for recipe in results %}
                 <div class="col pb-5" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="{% widthratio forloop.counter 1 200 %}">
-                    <div class="card h-100 shadow">
+                    <div class="card h-100 shadow products">
                         {% if recipe.image %}
                             <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.recipename }}" style="height: 250px; object-fit: cover;">
                         {% else %}

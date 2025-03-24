@@ -78,7 +78,7 @@
                 <div class="row">
                     {% for recipe in recipes|slice:":4" %}
                         <div class="col-md-3 mb-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="{% widthratio forloop.counter 1 200 %}">
-                            <div class="card h-100 shadow">
+                            <div class="card h-100 shadow products">
                                 <div class="position-relative">
                                     {% if recipe.image %}
                                         <a href="{% url 'recipes:detail' category=recipe.recipetype.recipetype|lower slug=recipe.slug %}">
