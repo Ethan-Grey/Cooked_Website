@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import login as auth_login, logout
+from django.contrib.auth import login as auth_login, logout, authenticate
 from django.contrib.auth.models import User
 from .forms import UserEmailPasswordForm, UserProfileForm, CustomLoginForm
 from recipes.models import Recipe, Review
@@ -11,6 +11,8 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth.tokens import default_token_generator
 from django.conf import settings
+from django.contrib import messages
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 
@@ -215,25 +217,25 @@ def verify_email(request, uidb64, token):
         return render(request, 'users/email_verification_failed.html')
 
 # Login user
-def user_login(request):
+def login_view(request):
     if request.method == 'POST':
-        form = CustomLoginForm(data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            if not user.is_active:
-                # User exists but hasn't verified their email
-                return render(request, 'users/login.html', {
-                    "form": form,
-                    "error": "Please verify your email address before logging in. Check your inbox for the verification link."
-                })
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
             auth_login(request, user)
-            if "next" in request.POST:
-                return redirect(request.POST.get('next'))
-            else:
-                return redirect("/")
-    else:
-        form = CustomLoginForm()
-    return render(request, 'users/login.html', {"form": form})
+            # Redirect to next URL if provided, otherwise home
+            next_url = request.POST.get('next', '/')
+            return HttpResponseRedirect(next_url)
+        else:
+            messages.error(request, 'Invalid username/email or password.')
+            # Get the previous page URL, fallback to home
+            referer = request.META.get('HTTP_REFERER', '/')
+            return HttpResponseRedirect(referer)
+            
+    # If someone tries to access the login URL directly, redirect to home
+    return redirect('/')
 
 def user_logout(request):
     logout(request)

@@ -871,4 +871,219 @@ footer {
         padding-top: 70px;
         padding-bottom: 70px;
     }
+
+    /* Navbar Sign In Button */
+    .navbar .btn-primary {
+        width: 100%;
+        margin: 0.5rem 1rem;
+        background-color: white;
+        color: var(--c-primary) !important;
+    }
+
+    .navbar .btn-primary:hover {
+        background-color: var(--c-accent-light);
+    }
+}
+
+/* Login Modal Styles */
+.modal-dialog.modal-lg {
+    max-width: 1000px;
+}
+
+.modal-content {
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.modal-body {
+    padding: 0;
+}
+
+.login-content {
+    display: flex;
+    min-height: 600px;
+}
+
+.login-welcome {
+    flex: 1;
+    background: linear-gradient(135deg, var(--c-primary) 0%, var(--c-primary-light) 100%);
+    color: white;
+    padding: 4rem 3rem;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.welcome-content {
+    position: relative;
+    z-index: 2;
+}
+
+.welcome-content h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.welcome-content p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.decorative-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.circle-1, .circle-2 {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.circle-1 {
+    width: 150px;
+    height: 150px;
+    top: -75px;
+    right: -75px;
+}
+
+.circle-2 {
+    width: 100px;
+    height: 100px;
+    bottom: -50px;
+    left: -50px;
+}
+
+.wave-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='rgba(255, 255, 255, 0.1)' d='M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+    background-size: cover;
+    background-position: center;
+    opacity: 0.2;
+}
+
+.login-form-container {
+    flex: 1;
+    padding: 4rem 3rem;
+    background: white;
+}
+
+.login-form-content {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.login-form-content h2 {
+    color: var(--c-secondary);
+    font-size: 1.875rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.form-group input {
+    padding-left: 40px !important;
+    height: 50px;
+    border-radius: 0.5rem;
+}
+
+.form-icon {
+    position: absolute;
+    top: 17px;
+    left: 15px;
+    color: var(--c-secondary);
+    z-index: 2;
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.remember-me input[type="checkbox"] {
+    accent-color: var(--c-primary);
+}
+
+.forgot-password {
+    color: var(--c-accent);
+    text-decoration: none;
+    font-size: 0.875rem;
+}
+
+.sign-in-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--c-primary);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.sign-in-btn:hover {
+    background: var(--c-primary-dark);
+}
+
+/* Override Bootstrap's default modal backdrop */
+.modal-backdrop.show {
+    opacity: 0.85;
+    backdrop-filter: blur(5px);
+}
+
+@media (max-width: 768px) {
+    .login-content {
+        flex-direction: column;
+    }
+    
+    .login-welcome {
+        padding: 2rem;
+    }
+    
+    .login-form-container {
+        padding: 2rem;
+    }
+}
+
+/* Form Control Styles */
+.form-control:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25);
+}
+
+/* Link Styles */
+a {
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #0a58ca;
+    text-decoration: underline;
 }
