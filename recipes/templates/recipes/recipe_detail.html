@@ -167,19 +167,19 @@
     <hr>
     <div class="row section-padding">
         <div class="col-12 text-center" data-aos="fade-down" data-aos-duration="1000">
-            <h1 class="display-4 fw-semibold text-uppercase">Leave a Review</h1>
+            <h1 class="display-4 fw-semibold text-uppercase">Reviews</h1>
             <div class="line"></div>
-            <p class="lead">Explore our collection of delicious recipes</p>
+            <p class="lead">Share your thoughts about this recipe</p>
         </div>
     </div>
     
-    <!-- Leave a Review Section - Now First -->
-    <div class="mb-5" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
-        <div class="card shadow-sm border-0">
-            <div class="card-body p-4">
-                <h4 class="mb-4 fw-bold">{{ recipe.recipename }}</h4>
-                
-                {% if user.is_authenticated %}
+    {% if user.is_authenticated %}
+        <!-- Leave a Review Section - Only shown for authenticated users -->
+        <div class="mb-5" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <h4 class="mb-4 fw-bold">Leave a Review for {{ recipe.recipename }}</h4>
+                    
                     <form method="post" action="{% url 'recipes:add_review' recipe.id %}" class="review-form">
                         {% csrf_token %}
                         
@@ -215,21 +215,31 @@
                             <button type="submit" class="btn btn-primary px-4">SUBMIT</button>
                         </div>
                     </form>
-                {% else %}
-                    <div class="alert alert-info mb-0">
-                        <i class="bi bi-info-circle me-2"></i>Please <a href="{% url 'login' %}" class="alert-link">login</a> to leave a review.
-                    </div>
-                {% endif %}
+                </div>
             </div>
         </div>
-    </div>
+    {% else %}
+        <!-- Login Prompt for Non-authenticated Users -->
+        <div class="mb-5" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4 text-center">
+                    <h4 class="mb-3 fw-bold">Want to Leave a Review?</h4>
+                    <p class="text-muted mb-4">Join our community to share your thoughts about this recipe</p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="{% url 'users:login' %}" class="btn btn-primary px-4">Login</a>
+                        <a href="{% url 'users:register_email_password' %}" class="btn btn-outline-dark px-4">Register</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
     
-    <!-- Reviews List Section - Now Second -->
+    <!-- Reviews List Section -->
     <div class="row section-padding">
         <div class="col-12 text-center" data-aos="fade-down" data-aos-duration="1000">
-            <h1 class="display-4 fw-semibold text-uppercase">User Reviews</h1>
+            <h2 class="fw-semibold text-uppercase">User Reviews</h2>
             <div class="line"></div>
-            <p class="lead">Explore our collection of delicious recipes</p>
+            <p class="lead">See what others think about this recipe</p>
         </div>
     </div>
     <div class="container" style="width: 80%;" data-aos="fade-right" data-aos-duration="1000">
