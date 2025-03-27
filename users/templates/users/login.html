@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     {% load static %}
     {% load crispy_forms_tags %}
+    {% load socialaccount %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <style>
         .form-group {
@@ -93,6 +94,19 @@
                             </div>
                             <button type="submit" class="sign-in-btn">Sign In</button>
                         </form>
+
+                        <!-- Google Sign In Button -->
+                        <div class="social-login mt-4">
+                            <div class="divider">
+                                <span>or</span>
+                            </div>
+                            <a href="{% provider_login_url 'google' process='login' %}" 
+                               class="google-sign-in-btn">
+                                <img src="https://www.google.com/favicon.ico" alt="Google" class="google-icon">
+                                Sign in with Google
+                            </a>
+                        </div>
+
                         <div class="register-link">
                             <p>New here? <a href="{% url 'users:register_email_password' %}">Create an Account</a></p>
                         </div>

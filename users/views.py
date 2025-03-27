@@ -215,7 +215,7 @@ def verify_email(request, uidb64, token):
         return render(request, 'users/email_verification_failed.html')
 
 # Login user
-def user_login(request):  # Renamed function
+def user_login(request):
     if request.method == 'POST':
         form = CustomLoginForm(data=request.POST)
         if form.is_valid():
@@ -226,11 +226,11 @@ def user_login(request):  # Renamed function
                     "form": form,
                     "error": "Please verify your email address before logging in. Check your inbox for the verification link."
                 })
-            auth_login(request, user)  # Use auth_login to avoid conflict
+            auth_login(request, user)
             if "next" in request.POST:
                 return redirect(request.POST.get('next'))
             else:
-                return redirect("/")  # Redirect to home page
+                return redirect("/")
     else:
         form = CustomLoginForm()
     return render(request, 'users/login.html', {"form": form})
