@@ -19,11 +19,18 @@ from django.urls import path, include
 from . import views
 from django.conf.urls.static import static
 from django.conf import settings
+from users.views import login_cancelled, login_error, google_login_callback
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('recipes/', include('recipes.urls')),
     path('users/', include('users.urls')),
+    # Override allauth's login cancelled and error URLs
+    path('accounts/3rdparty/login/cancelled/', login_cancelled, name='socialaccount_login_cancelled'),
+    path('accounts/social/login/error/', login_error, name='socialaccount_login_error'),
+    # Handle Google login callback errors
+    path('accounts/google/login/callback/', google_login_callback, name='google_login_callback'),
+    # Keep this after our overrides to allow other allauth URLs to work
     path('accounts/', include('allauth.urls')),
     path('', views.home, name='home'),
     path('about-us/', views.about_us),

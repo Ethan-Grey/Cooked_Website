@@ -100,6 +100,27 @@
         </div>
     </nav>
 
+    <div class="d-flex flex-column min-vh-100">
+        <!-- Toast container for success messages -->
+        <div class="toast-container position-fixed top-0 end-0 p-3">
+            {% for message in messages %}
+                {% if message.tags != 'error' and message.tags != 'warning' %}
+                <div class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            {{ message }}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        {% block content %}
+        {% endblock %}
+    </div>
+
     <!-- Login Modal -->
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -123,19 +144,16 @@
                         <div class="login-form-container">
                             <div class="login-form-content">
                                 <h2>Sign In</h2>
+                                <!-- Error message container -->
+                                <div id="loginErrorContainer" class="alert alert-warning d-none" role="alert">
+                                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                    <span id="loginErrorMessage"></span>
+                                </div>
                                 {% if form.errors %}
                                 <div class="alert alert-warning" role="alert">
                                     <i class="bi bi-exclamation-triangle-fill me-2"></i>
                                     Invalid username/email or password.
                                 </div>
-                                {% endif %}
-                                {% if messages %}
-                                    {% for message in messages %}
-                                    <div class="alert alert-warning" role="alert">
-                                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                                        {{ message }}
-                                    </div>
-                                    {% endfor %}
                                 {% endif %}
                                 <form class="login-form" action="/users/login/" method="post">
                                     {% csrf_token %}
@@ -163,14 +181,15 @@
                                         <span>or</span>
                                     </div>
                                     <a href="{% provider_login_url 'google' process='login' %}" 
-                                       class="google-sign-in-btn">
+                                       class="google-sign-in-btn"
+                                       id="googleSignInBtn">
                                         <img src="https://www.google.com/favicon.ico" alt="Google" class="google-icon">
                                         Sign in with Google
                                     </a>
                                 </div>
 
                                 <div class="register-link">
-                                    <p>New here? <a href="/users/register/">Create an Account</a></p>
+                                    <p>New here? <a href="#" data-bs-toggle="modal" data-bs-target="#signupModal">Create an Account</a></p>
                                 </div>
                             </div>
                         </div>
@@ -180,14 +199,128 @@
         </div>
     </div>
 
-    <div class="d-flex flex-column min-vh-100">
+    <!-- Signup Modal -->
+    <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <div class="login-content">
+                        <!-- Left side with purple background and welcome message -->
+                        <div class="login-welcome">
+                            <div class="welcome-content">
+                                <h1>Welcome to Cooked!</h1>
+                                <p>Create an account to start sharing and discovering amazing recipes.</p>
+                            </div>
+                            <div class="decorative-elements">
+                                <div class="circle-1"></div>
+                                <div class="circle-2"></div>
+                                <div class="wave-line"></div>
+                            </div>
+                        </div>
 
-      {% block content %}
-      {% endblock %}
-      
+                        <!-- Right side with signup form -->
+                        <div class="login-form-container">
+                            <div class="login-form-content">
+                                <h2>Create Account</h2>
+                                <!-- Error message container -->
+                                <div id="signupErrorContainer" class="alert alert-warning d-none" role="alert">
+                                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                    <span id="signupErrorMessage"></span>
+                                </div>
+
+                                <form class="login-form" action="{% url 'users:register_email_password' %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <i class="bi bi-envelope form-icon"></i>
+                                        <input type="email" name="email" class="form-control" placeholder="Email" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <i class="bi bi-lock form-icon"></i>
+                                        <input type="password" name="password1" class="form-control" placeholder="Password" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <i class="bi bi-lock form-icon"></i>
+                                        <input type="password" name="password2" class="form-control" placeholder="Confirm Password" required>
+                                    </div>
+                                    <button type="submit" class="sign-in-btn">Sign Up</button>
+                                </form>
+
+                                <!-- Google Sign Up Button -->
+                                <div class="social-login mt-4">
+                                    <div class="divider">
+                                        <span>or</span>
+                                    </div>
+                                    <a href="{% provider_login_url 'google' process='signup' %}" 
+                                       class="google-sign-in-btn"
+                                       id="googleSignUpBtn">
+                                        <img src="https://www.google.com/favicon.ico" alt="Google" class="google-icon">
+                                        Sign up with Google
+                                    </a>
+                                </div>
+
+                                <div class="register-link">
+                                    <p>Already have an account? <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal">Sign In</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    
+    <!-- Profile Registration Modal -->
+    <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <div class="login-content">
+                        <!-- Left side with purple background and welcome message -->
+                        <div class="login-welcome">
+                            <div class="welcome-content">
+                                <h1>Complete Your Profile</h1>
+                                <p>Tell us a little more about yourself to complete your registration.</p>
+                            </div>
+                            <div class="decorative-elements">
+                                <div class="circle-1"></div>
+                                <div class="circle-2"></div>
+                                <div class="wave-line"></div>
+                            </div>
+                        </div>
+
+                        <!-- Right side with profile form -->
+                        <div class="login-form-container">
+                            <div class="login-form-content">
+                                <h2>Profile Details</h2>
+                                <!-- Error message container -->
+                                <div id="profileErrorContainer" class="alert alert-warning d-none" role="alert">
+                                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                    <span id="profileErrorMessage"></span>
+                                </div>
+
+                                <form class="login-form" action="{% url 'users:register_profile' %}" method="post" id="profileForm">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <i class="bi bi-person form-icon"></i>
+                                        <input type="text" name="first_name" class="form-control" placeholder="First Name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <i class="bi bi-person form-icon"></i>
+                                        <input type="text" name="last_name" class="form-control" placeholder="Last Name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <i class="bi bi-at form-icon"></i>
+                                        <input type="text" name="username" class="form-control" placeholder="Choose a Username" required>
+                                    </div>
+                                    <button type="submit" class="sign-in-btn">Complete Registration</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <footer class="py-4 mt-5 border-top">
       <div class="container">
@@ -258,25 +391,19 @@
       </div>
   </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS and other scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="{% static 'js/backToTop.js' %}"></script>
+    <script src="{% static 'js/profile_nav.js' %}"></script>
 
     <!-- Back to Top Button -->
-<button id="backToTopBtn" class="btn btn-secondary rounded-circle position-fixed" style="bottom: 30px; right: 30px; width: 50px; height: 50px; display: none; z-index: 1000;">
-  <i class="bi bi-arrow-up"></i>
-</button>
+    <button id="backToTopBtn" class="btn btn-secondary rounded-circle position-fixed" style="bottom: 30px; right: 30px; width: 50px; height: 50px; display: none; z-index: 1000;">
+        <i class="bi bi-arrow-up"></i>
+    </button>
 
-<button id="backToTopBtn" class="btn btn-secondary rounded-circle position-fixed" style="bottom: 30px; right: 30px; width: 50px; height: 50px; display: none; z-index: 1000;">
-  <i class="bi bi-arrow-up"></i>
-</button>
-
-<!-- Add this script tag to load your JS file -->
-<script src="{% static 'js/backToTop.js' %}"></script>
-<script src="{% static 'js/profile_nav.js' %}"></script>
-
-<!-- Add AOS JS before other scripts -->
-<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
+    <script>
+        // Initialize AOS
         AOS.init({
             offset: 120,
             delay: 0,
@@ -286,43 +413,244 @@
             mirror: false,
             anchorPlacement: 'top-bottom'
         });
-        
-        // Highlight current active menu item
-        const currentPath = window.location.pathname;
-        
-        // Check all dropdown items
-        document.querySelectorAll('.dropdown-item').forEach(item => {
-            const itemPath = item.getAttribute('href');
-            if (itemPath && currentPath.includes(itemPath)) {
-                item.classList.add('active');
-                // Also make the parent dropdown toggle active
-                const parentDropdown = item.closest('.dropdown');
-                if (parentDropdown) {
-                    const toggle = parentDropdown.querySelector('.dropdown-toggle');
-                    if (toggle) toggle.classList.add('active');
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to show error in the login modal
+            function showLoginError(message) {
+                const errorContainer = document.getElementById('loginErrorContainer');
+                const errorMessage = document.getElementById('loginErrorMessage');
+                errorMessage.textContent = message;
+                errorContainer.classList.remove('d-none');
+                
+                // Show the login modal
+                var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+                loginModal.show();
+            }
+
+            // Function to hide error in the login modal
+            function hideLoginError() {
+                const errorContainer = document.getElementById('loginErrorContainer');
+                errorContainer.classList.add('d-none');
+            }
+
+            // Function to decode URL parameters
+            function decodeURLParam(param) {
+                return decodeURIComponent(param.replace(/\+/g, ' '));
+            }
+
+            // Handle Google sign-in button click
+            document.getElementById('googleSignInBtn').addEventListener('click', function(e) {
+                // Hide any existing error messages when starting a new login attempt
+                hideLoginError();
+            });
+
+            // Check URL for error parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const error = urlParams.get('error');
+            const message = urlParams.get('message');
+            const email = urlParams.get('email');
+
+            // If we have error parameters, show them in the modal
+            if (error && message) {
+                showLoginError(decodeURLParam(message));
+                
+                // Clear the URL parameters after showing the error
+                if (window.history && window.history.replaceState) {
+                    const newURL = window.location.pathname;
+                    window.history.replaceState({}, document.title, newURL);
                 }
             }
-        });
-        
-        // Check top-level nav links
-        document.querySelectorAll('.nav-link:not(.dropdown-toggle)').forEach(link => {
-            const linkPath = link.getAttribute('href');
-            if (linkPath && ((linkPath === '/' && currentPath === '/') || 
-                (linkPath !== '/' && currentPath.includes(linkPath)))) {
-                link.classList.add('active');
-            }
-        });
-    });
-</script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Show login modal if there are form errors or messages
-        {% if form.errors or messages %}
-            var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
-            loginModal.show();
-        {% endif %}
-    });
-</script>
+            // Clear error message when modal is closed
+            document.getElementById('loginModal').addEventListener('hidden.bs.modal', function () {
+                hideLoginError();
+            });
+
+            // Initialize toasts
+            var toastElList = [].slice.call(document.querySelectorAll('.toast'));
+            var toastList = toastElList.map(function(toastEl) {
+                var toast = new bootstrap.Toast(toastEl, {
+                    autohide: true,
+                    delay: 3000
+                });
+                toast.show();
+                return toast;
+            });
+
+            // Highlight current active menu item
+            const currentPath = window.location.pathname;
+            
+            // Check all dropdown items
+            document.querySelectorAll('.dropdown-item').forEach(item => {
+                const itemPath = item.getAttribute('href');
+                if (itemPath && currentPath.includes(itemPath)) {
+                    item.classList.add('active');
+                    // Also make the parent dropdown toggle active
+                    const parentDropdown = item.closest('.dropdown');
+                    if (parentDropdown) {
+                        const toggle = parentDropdown.querySelector('.dropdown-toggle');
+                        if (toggle) toggle.classList.add('active');
+                    }
+                }
+            });
+            
+            // Check top-level nav links
+            document.querySelectorAll('.nav-link:not(.dropdown-toggle)').forEach(link => {
+                const linkPath = link.getAttribute('href');
+                if (linkPath && ((linkPath === '/' && currentPath === '/') || 
+                    (linkPath !== '/' && currentPath.includes(linkPath)))) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Show login modal if there are form errors
+            {% if form.errors %}
+                var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+                loginModal.show();
+            {% endif %}
+
+            // Handle signup form submission
+            const signupForm = document.querySelector('#signupModal form');
+            if (signupForm) {
+                signupForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Hide any existing error messages
+                    const errorContainer = document.getElementById('signupErrorContainer');
+                    errorContainer.classList.add('d-none');
+
+                    // Get form data
+                    const formData = new FormData(this);
+
+                    // Send AJAX request
+                    fetch(this.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            // Hide signup modal
+                            const signupModal = bootstrap.Modal.getInstance(document.getElementById('signupModal'));
+                            signupModal.hide();
+
+                            // Show profile modal
+                            const profileModal = new bootstrap.Modal(document.getElementById('profileModal'));
+                            profileModal.show();
+                        } else {
+                            // Show error message
+                            const errorMessage = document.getElementById('signupErrorMessage');
+                            if (data.message) {
+                                errorMessage.textContent = data.message;
+                            } else if (data.errors) {
+                                errorMessage.textContent = Object.values(data.errors)[0];
+                            }
+                            errorContainer.classList.remove('d-none');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        const errorMessage = document.getElementById('signupErrorMessage');
+                        errorMessage.textContent = 'An error occurred. Please try again.';
+                        errorContainer.classList.remove('d-none');
+                    });
+                });
+            }
+
+            // Handle profile form submission
+            const profileForm = document.getElementById('profileForm');
+            if (profileForm) {
+                profileForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Hide any existing error messages
+                    const errorContainer = document.getElementById('profileErrorContainer');
+                    errorContainer.classList.add('d-none');
+
+                    // Get form data
+                    const formData = new FormData(this);
+
+                    // Send AJAX request
+                    fetch(this.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            // Hide profile modal
+                            const profileModal = bootstrap.Modal.getInstance(document.getElementById('profileModal'));
+                            profileModal.hide();
+
+                            // Show login modal with verification message
+                            const loginErrorContainer = document.getElementById('loginErrorContainer');
+                            const loginErrorMessage = document.getElementById('loginErrorMessage');
+                            loginErrorContainer.className = 'alert alert-info';
+                            loginErrorMessage.innerHTML = `
+                                <i class="bi bi-envelope me-2"></i>
+                                ${data.message}
+                            `;
+                            loginErrorContainer.classList.remove('d-none');
+
+                            // Show login modal
+                            const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+                            loginModal.show();
+
+                            // Show success toast
+                            const toast = document.createElement('div');
+                            toast.className = 'toast align-items-center text-white bg-success border-0';
+                            toast.setAttribute('role', 'alert');
+                            toast.setAttribute('aria-live', 'assertive');
+                            toast.setAttribute('aria-atomic', 'true');
+                            toast.innerHTML = `
+                                <div class="d-flex">
+                                    <div class="toast-body">
+                                        Registration successful! Please check your email.
+                                    </div>
+                                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                                </div>
+                            `;
+                            document.querySelector('.toast-container').appendChild(toast);
+                            const bsToast = new bootstrap.Toast(toast);
+                            bsToast.show();
+                        } else {
+                            // Show error messages
+                            if (data.message) {
+                                const errorMessage = document.getElementById('profileErrorMessage');
+                                errorMessage.textContent = data.message;
+                                errorContainer.classList.remove('d-none');
+                            } else if (data.errors) {
+                                const errorMessage = document.getElementById('profileErrorMessage');
+                                errorMessage.textContent = Object.values(data.errors)[0];
+                                errorContainer.classList.remove('d-none');
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        const errorMessage = document.getElementById('profileErrorMessage');
+                        errorMessage.textContent = 'An error occurred. Please try again.';
+                        errorContainer.classList.remove('d-none');
+                    });
+                });
+            }
+
+            // Clear error messages when modals are hidden
+            ['loginModal', 'signupModal', 'profileModal'].forEach(modalId => {
+                document.getElementById(modalId).addEventListener('hidden.bs.modal', function () {
+                    const errorContainer = document.getElementById(`${modalId.split('Modal')[0]}ErrorContainer`);
+                    if (errorContainer) {
+                        errorContainer.classList.add('d-none');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

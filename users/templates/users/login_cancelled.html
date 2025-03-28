@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 section-padding">
+    <div class="max-w-md w-full space-y-8">
+        <div>
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                Login Cancelled
+            </h2>
+            <div class="mt-4 bg-white shadow-md rounded-lg p-6">
+                <div class="text-center">
+                    <p class="mt-4 text-gray-600">
+                        You cancelled the login process. No worries - you can try again whenever you're ready.
+                    </p>
+                    <div class="mt-6 flex justify-center space-x-4">
+                        <a href="{% url 'home' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Go Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -41,4 +41,6 @@ urlpatterns = [
              template_name='users/password_reset_complete.html'
          ), 
          name='password_reset_complete'),
+    path('login/cancelled/', views.login_cancelled, name='login_cancelled'),
+    path('login/error/', views.login_error, name='login_error'),
 ]

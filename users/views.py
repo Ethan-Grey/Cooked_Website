@@ -12,7 +12,9 @@ from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth.tokens import default_token_generator
 from django.conf import settings
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
+from allauth.socialaccount.models import SocialAccount
+from django.views.decorators.http import require_http_methods
 
 # Create your views here.
 
@@ -83,29 +85,43 @@ def user_profile(request):
 
 def user_register(request):
     if request.method == "POST":
-        # Step 1: Handle the first form (Email and Password)
-        if 'email_password_form' in request.POST:
-            form1 = UserEmailPasswordForm(request.POST)
-            if form1.is_valid():
-                email = form1.cleaned_data['email']
-                password = form1.cleaned_data['password1']
-                
-                print(f"Storing in session - Email: {email}, Password: {'*' * len(password)}")
-                
-                # Save the email and password in the session to use in the next form
-                request.session['email'] = email
-                request.session['password'] = password
-                request.session.modified = True  # Make sure session is saved
-                
-                print("Session data stored, redirecting to profile registration")
-                return redirect('users:register_profile')  # Redirect to the second form
-            else:
-                print("Form errors:", form1.errors)
-                # Let the form handle the error display naturally
-                # The error will be displayed using the errorlist class in the template
+        form1 = UserEmailPasswordForm(request.POST)
+        if form1.is_valid():
+            email = form1.cleaned_data['email']
+            password = form1.cleaned_data['password1']
+            
+            # Check if email already exists
+            if User.objects.filter(email=email).exists():
+                if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                    return JsonResponse({
+                        'status': 'error',
+                        'message': 'This email is already registered. Please use a different email or sign in.'
+                    })
+                messages.error(request, 'This email is already registered. Please use a different email or sign in.')
+                return redirect('users:register_email_password')
+
+            # Store data in session
+            request.session['email'] = email
+            request.session['password'] = password
+            request.session.modified = True
+
+            # Return success response for AJAX request
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({
+                    'status': 'success',
+                    'message': 'Great! Now let\'s complete your profile.'
+                })
+
+            return redirect('users:register_profile')
         else:
-            print("Form submission without email_password_form in POST data")
-            form1 = UserEmailPasswordForm()
+            # If it's an AJAX request, return form errors
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                errors = {field: errors[0] for field, errors in form1.errors.items()}
+                return JsonResponse({
+                    'status': 'error',
+                    'errors': errors
+                })
+            
     else:
         form1 = UserEmailPasswordForm()
 
@@ -114,22 +130,21 @@ def user_register(request):
 
 def register_profile(request):
     if request.method == "POST":
-        print("Form submitted:", request.POST)
-        print("Session data:", request.session.items())
-        
         form2 = UserProfileForm(request.POST)
         if form2.is_valid():
             try:
                 email = request.session.get('email')
                 password = request.session.get('password')
                 
-                print(f"Retrieved from session - Email: {email}, Password: {'*' * len(password) if password else 'None'}")
-                
                 if not email or not password:
-                    print("Missing session data, redirecting to first step")
+                    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                        return JsonResponse({
+                            'status': 'error',
+                            'message': 'Session expired. Please start the registration process again.'
+                        })
                     return redirect('users:register_email_password')
                 
-                # Store all user data in session instead of creating the user
+                # Store all user data in session
                 user_data = {
                     'email': email,
                     'password': password,
@@ -140,8 +155,8 @@ def register_profile(request):
                 request.session['user_data'] = user_data
                 
                 # Generate verification token
-                token = default_token_generator.make_token(User(username=user_data['username']))  # Temporary user for token generation
-                uid = urlsafe_base64_encode(force_bytes(user_data['username']))  # Use username as uid since user doesn't exist yet
+                token = default_token_generator.make_token(User(username=user_data['username']))
+                uid = urlsafe_base64_encode(force_bytes(user_data['username']))
                 
                 verification_url = request.build_absolute_uri(
                     f'/users/verify-email/{uid}/{token}/'
@@ -150,7 +165,7 @@ def register_profile(request):
                 # Send verification email
                 subject = 'Verify your email address'
                 message = render_to_string('users/email_verification.html', {
-                    'user': {'first_name': user_data['first_name']},  # Pass minimal user data for template
+                    'user': {'first_name': user_data['first_name']},
                     'verification_url': verification_url,
                 })
                 
@@ -168,21 +183,40 @@ def register_profile(request):
                 if 'password' in request.session:
                     del request.session['password']
                 
+                if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                    return JsonResponse({
+                        'status': 'success',
+                        'message': f'Registration complete! We\'ve sent a verification link to {user_data["email"]}. Please check your email and verify your account before logging in.'
+                    })
+                
                 return render(request, 'users/registration_success.html', {
                     'email': user_data['email']
                 })
                 
             except Exception as e:
-                print(f"Error in registration process: {e}")
+                if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                    return JsonResponse({
+                        'status': 'error',
+                        'message': f'Error in registration process: {str(e)}'
+                    })
                 return render(request, 'users/register_profile.html', {
                     "form2": form2,
                     "error": f"Error in registration process: {str(e)}"
                 })
         else:
-            print("Form errors:", form2.errors)
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                errors = {field: errors[0] for field, errors in form2.errors.items()}
+                return JsonResponse({
+                    'status': 'error',
+                    'errors': errors
+                })
     else:
         if 'email' not in request.session or 'password' not in request.session:
-            print("Session data missing on GET request")
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'Session expired. Please start the registration process again.'
+                })
             return redirect('users:register_email_password')
             
         form2 = UserProfileForm()
@@ -240,3 +274,48 @@ def login_view(request):
 def user_logout(request):
     logout(request)
     return redirect("/")
+
+def login_cancelled(request):
+    return render(request, 'users/login_cancelled.html')
+
+def login_error(request):
+    return render(request, 'users/login_error.html')
+
+@require_http_methods(["GET"])
+def google_login_callback(request):
+    error = request.GET.get('error')
+    state = request.GET.get('state')
+    
+    # Prepare the error message and type
+    error_data = {
+        'error_type': 'unknown',
+        'message': 'An error occurred while trying to log in with Google. Please try again.'
+    }
+    
+    if error == 'access_denied':
+        error_data = {
+            'error_type': 'access_denied',
+            'message': 'The login process was cancelled. You can try again when you\'re ready.'
+        }
+    
+    # Check if this is an email conflict
+    elif error and 'email' in request.GET:
+        email = request.GET.get('email')
+        try:
+            # Check if user exists with this email
+            user = User.objects.get(email=email)
+            if not SocialAccount.objects.filter(user=user, provider='google').exists():
+                error_data = {
+                    'error_type': 'email_exists',
+                    'message': f'This email ({email}) is already registered. Please sign in with your password or reset it.',
+                    'email': email
+                }
+        except User.DoesNotExist:
+            pass
+
+    # Redirect to home with error parameters
+    redirect_url = f'/?error={error_data["error_type"]}&message={error_data["message"]}'
+    if 'email' in error_data:
+        redirect_url += f'&email={error_data["email"]}'
+    
+    return redirect(redirect_url)

@@ -185,7 +185,6 @@ SOCIALACCOUNT_PROVIDERS = {
         'AUTH_PARAMS': {
             'access_type': 'online',
             'prompt': 'select_account',
-            'redirect_uri': 'http://127.0.0.1:8000/accounts/google/login/callback/'
         }
     }
 }
@@ -210,6 +209,10 @@ SOCIALACCOUNT_QUERY_EMAIL = True
 SOCIALACCOUNT_EMAIL_REQUIRED = True
 SOCIALACCOUNT_EMAIL_VERIFICATION = 'none'
 
+# Error handling
+SOCIALACCOUNT_LOGIN_ERROR_URL = '/users/login/error/'
+ACCOUNT_LOGIN_ERROR_URL = '/users/login/error/'
+
 # Allow popup windows
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000']
@@ -222,6 +225,7 @@ SOCIALACCOUNT_TEMPLATE_PACK = 'bootstrap5'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/'
+SOCIALACCOUNT_LOGIN_CANCELLED_URL = '/users/login/cancelled/'
 
 # Debug settings
 DEBUG = True
