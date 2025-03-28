@@ -19,6 +19,22 @@
     </div>
 </section>
 
+<div class="container mb-4">
+    <div class="dropdown d-flex justify-content-end dropdown-menu-end">
+        <button class="btn btn-sm btn-outline dropdown-toggle me-3" type="button" id="recipeFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-funnel me-1"></i> Sort by
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="recipeFilterDropdown">
+            <li><a class="dropdown-item {% if current_sort == 'newest' %}active{% endif %}" href="?sort=newest">Newest First</a></li>
+            <li><a class="dropdown-item {% if current_sort == 'oldest' %}active{% endif %}" href="?sort=oldest">Oldest First</a></li>
+            <li><a class="dropdown-item {% if current_sort == 'top_rated' %}active{% endif %}" href="?sort=top_rated">Highest Rated</a></li>
+            <li><a class="dropdown-item {% if current_sort == 'lowest_rated' %}active{% endif %}" href="?sort=lowest_rated">Lowest Rated</a></li>
+            <li><a class="dropdown-item {% if current_sort == 'name_asc' %}active{% endif %}" href="?sort=name_asc">Name (A-Z)</a></li>
+            <li><a class="dropdown-item {% if current_sort == 'name_desc' %}active{% endif %}" href="?sort=name_desc">Name (Z-A)</a></li>
+        </ul>
+    </div>
+</div>
+
 <div class="container">
     <div class="row">
         {% for recipe in category_recipes %}
@@ -49,7 +65,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="rating">
                                 {% for i in "12345"|make_list %}
-                                    {% if forloop.counter <= recipe.average_rating %}
+                                    {% if forloop.counter <= recipe.avg_rating %}
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill text-warning" viewBox="0 0 16 16">
                                             <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
                                         </svg>

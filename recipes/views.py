@@ -48,14 +48,33 @@ def home(request):
 
 def recipe_category(request, category):
     recipe_type = get_object_or_404(RecipeType, recipetype__iexact=category)
-    # Get recipes for this category with their average ratings
+    
+    # Get the sort parameter from the request
+    sort_by = request.GET.get('sort', 'newest')
+    
+    # Base queryset with average ratings
     category_recipes = Recipe.objects.filter(recipetype=recipe_type).annotate(
         avg_rating=Avg('reviews__rating')
-    ).order_by('-id')
+    )
+    
+    # Apply sorting based on the sort parameter
+    if sort_by == 'newest':
+        category_recipes = category_recipes.order_by('-id')
+    elif sort_by == 'oldest':
+        category_recipes = category_recipes.order_by('id')
+    elif sort_by == 'top_rated':
+        category_recipes = category_recipes.order_by('-avg_rating', '-id')
+    elif sort_by == 'lowest_rated':
+        category_recipes = category_recipes.order_by('avg_rating', '-id')
+    elif sort_by == 'name_asc':
+        category_recipes = category_recipes.order_by('recipename')
+    elif sort_by == 'name_desc':
+        category_recipes = category_recipes.order_by('-recipename')
     
     context = {
         'category': recipe_type,
-        'category_recipes': category_recipes
+        'category_recipes': category_recipes,
+        'current_sort': sort_by
     }
     return render(request, 'recipes/category.html', context)
 
