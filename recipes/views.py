@@ -101,13 +101,31 @@ def recipe_detail(request, category, slug):
     return render(request, 'recipes/recipe_detail.html', context)
 
 def all_recipes(request):
+    # Get the sort parameter from the request
+    sort_by = request.GET.get('sort', 'newest')
+    
     # Get all recipes with their average ratings
     recipes = Recipe.objects.annotate(
         avg_rating=Avg('reviews__rating')
-    ).order_by('-id')
+    )
+    
+    # Apply sorting based on the sort parameter
+    if sort_by == 'newest':
+        recipes = recipes.order_by('-id')
+    elif sort_by == 'oldest':
+        recipes = recipes.order_by('id')
+    elif sort_by == 'top_rated':
+        recipes = recipes.order_by('-avg_rating', '-id')
+    elif sort_by == 'lowest_rated':
+        recipes = recipes.order_by('avg_rating', '-id')
+    elif sort_by == 'name_asc':
+        recipes = recipes.order_by('recipename')
+    elif sort_by == 'name_desc':
+        recipes = recipes.order_by('-recipename')
     
     context = {
-        'recipes': recipes
+        'recipes': recipes,
+        'current_sort': sort_by
     }
     return render(request, 'recipes/all_recipes.html', context)
 

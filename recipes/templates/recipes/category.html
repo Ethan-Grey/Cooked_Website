@@ -20,11 +20,11 @@
 </section>
 
 <div class="container mb-4">
-    <div class="dropdown d-flex justify-content-end dropdown-menu-end">
-        <button class="btn btn-sm btn-outline dropdown-toggle me-3" type="button" id="recipeFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+    <div class="dropdown d-flex justify-content-end">
+        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-funnel me-1"></i> Sort by
         </button>
-        <ul class="dropdown-menu" aria-labelledby="recipeFilterDropdown">
+        <ul class="dropdown-menu dropdown-menu-end">
             <li><a class="dropdown-item {% if current_sort == 'newest' %}active{% endif %}" href="?sort=newest">Newest First</a></li>
             <li><a class="dropdown-item {% if current_sort == 'oldest' %}active{% endif %}" href="?sort=oldest">Oldest First</a></li>
             <li><a class="dropdown-item {% if current_sort == 'top_rated' %}active{% endif %}" href="?sort=top_rated">Highest Rated</a></li>
@@ -38,7 +38,7 @@
 <div class="container">
     <div class="row">
         {% for recipe in category_recipes %}
-            <div class="col-md-3 mb-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="{% widthratio forloop.counter 1 200 %}">
+            <div class="col-md-3 mb-4" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
                 <div class="card h-100 shadow products">
                     <div class="position-relative">
                         {% if recipe.image %}
