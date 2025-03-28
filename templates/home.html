@@ -98,6 +98,10 @@
                                     <p class="text-muted small">
                                         <i class="bi bi-person-circle me-1"></i>By {{ recipe.madeby }}
                                     </p>
+                                    <div class="recipe-meta d-flex gap-2 mb-2 text-muted small">
+                                        <span><i class="bi bi-clock-history me-1"></i>{{ recipe.prep_time|add:recipe.cook_time }} mins</span>
+                                        <span><i class="bi bi-people me-1"></i>{{ recipe.servings }} servings</span>
+                                    </div>
                                     <p class="card-text">{{ recipe.description|truncatechars:100 }}</p>
                                 </div>
                                 <div class="card-footer bg-transparent border-0">

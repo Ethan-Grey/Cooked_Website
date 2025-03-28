@@ -5,7 +5,7 @@ from django.contrib import messages
 from . import forms
 from .forms import CreateRecipe, ReviewForm
 from . import models
-from django.db.models import Q, Avg
+from django.db.models import Q, Avg, F
 from django.http import JsonResponse
 
 # Create your views here.
@@ -52,9 +52,10 @@ def recipe_category(request, category):
     # Get the sort parameter from the request
     sort_by = request.GET.get('sort', 'newest')
     
-    # Base queryset with average ratings
+    # Base queryset with average ratings and total time
     category_recipes = Recipe.objects.filter(recipetype=recipe_type).annotate(
-        avg_rating=Avg('reviews__rating')
+        avg_rating=Avg('reviews__rating'),
+        total_time=F('prep_time') + F('cook_time')
     )
     
     # Apply sorting based on the sort parameter
@@ -70,6 +71,14 @@ def recipe_category(request, category):
         category_recipes = category_recipes.order_by('recipename')
     elif sort_by == 'name_desc':
         category_recipes = category_recipes.order_by('-recipename')
+    elif sort_by == 'quickest':
+        category_recipes = category_recipes.order_by('total_time', '-id')
+    elif sort_by == 'longest':
+        category_recipes = category_recipes.order_by('-total_time', '-id')
+    elif sort_by == 'most_servings':
+        category_recipes = category_recipes.order_by('-servings', '-id')
+    elif sort_by == 'least_servings':
+        category_recipes = category_recipes.order_by('servings', '-id')
     
     context = {
         'category': recipe_type,
@@ -104,9 +113,10 @@ def all_recipes(request):
     # Get the sort parameter from the request
     sort_by = request.GET.get('sort', 'newest')
     
-    # Get all recipes with their average ratings
+    # Get all recipes with their average ratings and total time
     recipes = Recipe.objects.annotate(
-        avg_rating=Avg('reviews__rating')
+        avg_rating=Avg('reviews__rating'),
+        total_time=F('prep_time') + F('cook_time')
     )
     
     # Apply sorting based on the sort parameter
@@ -122,6 +132,14 @@ def all_recipes(request):
         recipes = recipes.order_by('recipename')
     elif sort_by == 'name_desc':
         recipes = recipes.order_by('-recipename')
+    elif sort_by == 'quickest':
+        recipes = recipes.order_by('total_time', '-id')
+    elif sort_by == 'longest':
+        recipes = recipes.order_by('-total_time', '-id')
+    elif sort_by == 'most_servings':
+        recipes = recipes.order_by('-servings', '-id')
+    elif sort_by == 'least_servings':
+        recipes = recipes.order_by('servings', '-id')
     
     context = {
         'recipes': recipes,

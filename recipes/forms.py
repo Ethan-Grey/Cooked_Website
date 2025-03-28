@@ -5,17 +5,14 @@ from .models import Review
 class CreateRecipe(forms.ModelForm):
     class Meta:
         model = models.Recipe
-        exclude = ['slug', 'madeby', 'favorites']  # Exclude both slug and madeby
-        labels = {
-            'recipename': 'Recipe Title',
-            'recipetype': 'Category',
-            # Other labels remain the same
-        }
+        fields = ['recipename', 'description', 'ingredients', 'instructions', 'prep_time', 'cook_time', 'servings', 'image', 'recipetype']
         widgets = {
-            'description': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Briefly describe your recipe'}),
-            'ingredients': forms.Textarea(attrs={'rows': 4, 'placeholder': 'List your ingredients, one per line'}),
-            'instructions': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Provide step-by-step instructions'}),
-            # Remove the madeby widget since we're excluding it
+            'description': forms.Textarea(attrs={'rows': 3}),
+            'ingredients': forms.Textarea(attrs={'rows': 5, 'placeholder': 'Enter each ingredient on a new line'}),
+            'instructions': forms.Textarea(attrs={'rows': 5, 'placeholder': 'Enter each step on a new line'}),
+            'prep_time': forms.NumberInput(attrs={'min': 0, 'placeholder': 'Prep time in minutes'}),
+            'cook_time': forms.NumberInput(attrs={'min': 0, 'placeholder': 'Cook time in minutes'}),
+            'servings': forms.NumberInput(attrs={'min': 1, 'placeholder': 'Number of servings'})
         }
 
 

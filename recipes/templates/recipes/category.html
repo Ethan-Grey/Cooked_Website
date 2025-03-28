@@ -21,16 +21,15 @@
 
 <div class="container mb-4">
     <div class="dropdown d-flex justify-content-end">
-        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <button class="btn btn-sm btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-funnel me-1"></i> Sort by
         </button>
         <ul class="dropdown-menu dropdown-menu-end">
             <li><a class="dropdown-item {% if current_sort == 'newest' %}active{% endif %}" href="?sort=newest">Newest First</a></li>
-            <li><a class="dropdown-item {% if current_sort == 'oldest' %}active{% endif %}" href="?sort=oldest">Oldest First</a></li>
             <li><a class="dropdown-item {% if current_sort == 'top_rated' %}active{% endif %}" href="?sort=top_rated">Highest Rated</a></li>
-            <li><a class="dropdown-item {% if current_sort == 'lowest_rated' %}active{% endif %}" href="?sort=lowest_rated">Lowest Rated</a></li>
+            <li><a class="dropdown-item {% if current_sort == 'quickest' %}active{% endif %}" href="?sort=quickest">Quickest to Make</a></li>
+            <li><a class="dropdown-item {% if current_sort == 'most_servings' %}active{% endif %}" href="?sort=most_servings">Most Servings</a></li>
             <li><a class="dropdown-item {% if current_sort == 'name_asc' %}active{% endif %}" href="?sort=name_asc">Name (A-Z)</a></li>
-            <li><a class="dropdown-item {% if current_sort == 'name_desc' %}active{% endif %}" href="?sort=name_desc">Name (Z-A)</a></li>
         </ul>
     </div>
 </div>
@@ -59,6 +58,10 @@
                         <p class="text-muted small">
                             <i class="bi bi-person-circle me-1"></i>By {{ recipe.madeby }}
                         </p>
+                        <div class="recipe-meta d-flex gap-2 mb-2 text-muted small">
+                            <span><i class="bi bi-clock-history me-1"></i>{{ recipe.prep_time|add:recipe.cook_time }} mins</span>
+                            <span><i class="bi bi-people me-1"></i>{{ recipe.servings }} servings</span>
+                        </div>
                         <p class="card-text">{{ recipe.description|truncatechars:100 }}</p>
                     </div>
                     <div class="card-footer bg-transparent border-0">
@@ -76,7 +79,7 @@
                                     {% endif %}
                                 {% endfor %}
                             </div>
-                            <a href="{% url 'recipes:detail' category=recipe.recipetype.recipetype slug=recipe.slug %}" class="btn btn-primary">View Recipe</a>
+                            <a href="{% url 'recipes:detail' category=recipe.recipetype.recipetype slug=recipe.slug %}" class="btn btn-dark">View Recipe</a>
                         </div>
                     </div>
                 </div>

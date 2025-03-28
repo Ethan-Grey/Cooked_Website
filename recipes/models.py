@@ -17,6 +17,9 @@ class Recipe(models.Model):
     description = models.TextField()
     ingredients = models.TextField()
     instructions = models.TextField(default='No instructions provided')
+    prep_time = models.IntegerField(help_text="Preparation time in minutes", default=0)
+    cook_time = models.IntegerField(help_text="Cooking time in minutes", default=0)
+    servings = models.IntegerField(help_text="Number of servings", default=1)
     
     # Change this line to use ForeignKey instead of CharField
     madeby = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipes')
