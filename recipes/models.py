@@ -49,5 +49,8 @@ class Review(models.Model):
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        unique_together = ['user', 'recipe']  # Ensures one review per user per recipe
+
     def __str__(self):
         return f'Review by {self.user.username} on {self.recipe.recipename}'

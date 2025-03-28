@@ -14,13 +14,21 @@ def add_review(request, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id)
     
     if request.method == "POST":
-        form = ReviewForm(request.POST)
+        # Check if user already has a review for this recipe
+        existing_review = Review.objects.filter(recipe=recipe, user=request.user).first()
+        
+        form = ReviewForm(request.POST, instance=existing_review)
         if form.is_valid():
             review = form.save(commit=False)
             review.recipe = recipe
             review.user = request.user
             review.save()
-            messages.success(request, "Your review has been added successfully!")
+            
+            if existing_review:
+                messages.success(request, "Your review has been updated successfully!")
+            else:
+                messages.success(request, "Your review has been added successfully!")
+                
             return redirect('recipes:detail', category=recipe.recipetype.recipetype, slug=recipe.slug)
         else:
             messages.error(request, "There was an error with your review. Please try again.")
@@ -226,4 +234,19 @@ def delete_review(request, review_id):
         messages.success(request, "Your review has been deleted successfully!")
         return redirect('users:profile_view')
     
+    return redirect('users:profile_view')
+
+@login_required
+def edit_review(request, review_id):
+    review = get_object_or_404(Review, id=review_id, user=request.user)
+    
+    if request.method == "POST":
+        form = ReviewForm(request.POST, instance=review)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your review has been updated successfully!")
+            return redirect('users:profile_view')
+        else:
+            messages.error(request, "There was an error updating your review. Please try again.")
+            
     return redirect('users:profile_view')

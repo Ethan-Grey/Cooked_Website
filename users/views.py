@@ -186,7 +186,7 @@ def register_profile(request):
                 if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                     return JsonResponse({
                         'status': 'success',
-                        'message': f'Registration complete! We\'ve sent a verification link to {user_data["email"]}. Please check your email and verify your account before logging in.'
+                        'message': f'Registration complete! Please check your email and verify your account before logging in.'
                     })
                 
                 return render(request, 'users/registration_success.html', {

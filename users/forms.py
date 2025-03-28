@@ -34,7 +34,9 @@ class UserEmailPasswordForm(forms.Form):
             'class': 'form-control', 
             'placeholder': 'Enter password'
         }),
-        label='Password'  # Custom label for password1
+        label='Password',  # Custom label for password1
+        min_length=8,
+        help_text='Your password must contain at least 8 characters.'
     )
     
     password2 = forms.CharField(
@@ -50,6 +52,18 @@ class UserEmailPasswordForm(forms.Form):
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError('This email address is already registered. Please use a different email or try logging in.')
         return email
+    
+    def clean_password1(self):
+        password = self.cleaned_data.get('password1')
+        if len(password) < 8:
+            raise forms.ValidationError('Password must be at least 8 characters long.')
+        if not any(char.isdigit() for char in password):
+            raise forms.ValidationError('Password must contain at least one number.')
+        if not any(char.isupper() for char in password):
+            raise forms.ValidationError('Password must contain at least one uppercase letter.')
+        if not any(char.islower() for char in password):
+            raise forms.ValidationError('Password must contain at least one lowercase letter.')
+        return password
     
     def clean(self):
         cleaned_data = super().clean()
