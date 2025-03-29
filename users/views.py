@@ -283,45 +283,6 @@ def login_cancelled(request):
 def login_error(request):
     return render(request, 'users/login_error.html')
 
-@require_http_methods(["GET"])
-def google_login_callback(request):
-    error = request.GET.get('error')
-    state = request.GET.get('state')
-    
-    # Prepare the error message and type
-    error_data = {
-        'error_type': 'unknown',
-        'message': 'An error occurred while trying to log in with Google. Please try again.'
-    }
-    
-    if error == 'access_denied':
-        error_data = {
-            'error_type': 'access_denied',
-            'message': 'The login process was cancelled. You can try again when you\'re ready.'
-        }
-    
-    # Check if this is an email conflict
-    elif error and 'email' in request.GET:
-        email = request.GET.get('email')
-        try:
-            # Check if user exists with this email
-            user = User.objects.get(email=email)
-            if not SocialAccount.objects.filter(user=user, provider='google').exists():
-                error_data = {
-                    'error_type': 'email_exists',
-                    'message': f'This email ({email}) is already registered. Please sign in with your password or reset it.',
-                    'email': email
-                }
-        except User.DoesNotExist:
-            pass
-
-    # Redirect to home with error parameters
-    redirect_url = f'/?error={error_data["error_type"]}&message={error_data["message"]}'
-    if 'email' in error_data:
-        redirect_url += f'&email={error_data["email"]}'
-    
-    return redirect(redirect_url)
-
 class CustomPasswordResetView(PasswordResetView):
     email_template_name = 'users/password_reset_email.html'
     subject_template_name = 'users/password_reset_subject.txt'

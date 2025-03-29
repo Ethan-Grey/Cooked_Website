@@ -480,6 +480,14 @@
             function showLoginError(message) {
                 const errorContainer = document.getElementById('loginErrorContainer');
                 const errorMessage = document.getElementById('loginErrorMessage');
+                
+                // Log the error for debugging
+                console.log('Login Error:', {
+                    message: message,
+                    timestamp: new Date().toISOString(),
+                    url: window.location.href
+                });
+                
                 errorMessage.textContent = message;
                 errorContainer.classList.remove('d-none');
                 
@@ -501,6 +509,12 @@
 
             // Handle Google sign-in button click
             document.getElementById('googleSignInBtn').addEventListener('click', function(e) {
+                // Log the attempt
+                console.log('Google Sign In Attempted:', {
+                    timestamp: new Date().toISOString(),
+                    button: 'googleSignInBtn'
+                });
+                
                 // Hide any existing error messages when starting a new login attempt
                 hideLoginError();
             });
@@ -510,6 +524,14 @@
             const error = urlParams.get('error');
             const message = urlParams.get('message');
             const email = urlParams.get('email');
+
+            // Log all URL parameters for debugging
+            console.log('URL Parameters:', {
+                error: error,
+                message: message,
+                email: email,
+                fullURL: window.location.href
+            });
 
             // If we have error parameters, show them in the modal
             if (error && message) {

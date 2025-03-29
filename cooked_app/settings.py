@@ -29,7 +29,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -184,38 +184,51 @@ SOCIALACCOUNT_PROVIDERS = {
         ],
         'AUTH_PARAMS': {
             'access_type': 'online',
-            'prompt': 'select_account',
         }
     }
 }
 
 # AllAuth settings
-ACCOUNT_LOGIN_METHODS = {'email'}
-ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*']
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
-ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 ACCOUNT_SESSION_REMEMBER = True
-ACCOUNT_RATE_LIMITS = {
-    'login_failed': '5/m'
-}
+ACCOUNT_USERNAME_MIN_LENGTH = 3
 
-# Skip the intermediate page
-SOCIALACCOUNT_LOGIN_ON_GET = True
+# Social Account Settings
 SOCIALACCOUNT_AUTO_SIGNUP = True
-SOCIALACCOUNT_STORE_TOKENS = True
-SOCIALACCOUNT_QUERY_EMAIL = True
 SOCIALACCOUNT_EMAIL_REQUIRED = True
 SOCIALACCOUNT_EMAIL_VERIFICATION = 'none'
+SOCIALACCOUNT_QUERY_EMAIL = True
+SOCIALACCOUNT_STORE_TOKENS = True
+SOCIALACCOUNT_LOGIN_ON_GET = True
+SOCIALACCOUNT_FORMS = {}
+
+# Login/Signup Settings
+LOGIN_URL = '/'
+LOGIN_REDIRECT_URL = '/'
+ACCOUNT_LOGOUT_REDIRECT_URL = '/'
+ACCOUNT_SIGNUP_REDIRECT_URL = '/'
+SOCIALACCOUNT_SIGNUP_REDIRECT_URL = '/'
 
 # Error handling
-SOCIALACCOUNT_LOGIN_ERROR_URL = '/users/login/error/'
-ACCOUNT_LOGIN_ERROR_URL = '/users/login/error/'
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+
+# Adapter Settings
+SOCIALACCOUNT_ADAPTER = 'users.adapters.CustomSocialAccountAdapter'
+ACCOUNT_ADAPTER = 'users.adapters.CustomAccountAdapter'
 
 # Allow popup windows
 X_FRAME_OPTIONS = 'SAMEORIGIN'
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000']
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:8000',
+    'http://localhost:8000',
+    'https://127.0.0.1:8000',
+    'https://localhost:8000'
+]
 
 # Template settings
 SOCIALACCOUNT_TEMPLATE_EXTENSION = 'html'
@@ -245,3 +258,7 @@ LOGGING = {
         },
     },
 }
+
+# Error handling
+SOCIALACCOUNT_LOGIN_ERROR_URL = '/users/login/error/'
+ACCOUNT_LOGIN_ERROR_URL = '/users/login/error/'
