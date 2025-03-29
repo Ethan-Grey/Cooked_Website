@@ -15,6 +15,8 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect, JsonResponse
 from allauth.socialaccount.models import SocialAccount
 from django.views.decorators.http import require_http_methods
+from django.contrib.auth.views import PasswordResetView
+from django.urls import reverse_lazy
 
 # Create your views here.
 
@@ -319,3 +321,40 @@ def google_login_callback(request):
         redirect_url += f'&email={error_data["email"]}'
     
     return redirect(redirect_url)
+
+class CustomPasswordResetView(PasswordResetView):
+    email_template_name = 'users/password_reset_email.html'
+    subject_template_name = 'users/password_reset_subject.txt'
+    success_url = reverse_lazy('users:password_reset_done')
+
+    def form_valid(self, form):
+        """If the form is valid, redirect to the supplied URL."""
+        # Process the form
+        opts = {
+            'use_https': self.request.is_secure(),
+            'token_generator': self.token_generator,
+            'from_email': self.from_email,
+            'email_template_name': self.email_template_name,
+            'subject_template_name': self.subject_template_name,
+            'request': self.request,
+            'html_email_template_name': self.html_email_template_name,
+            'extra_email_context': self.extra_email_context,
+        }
+        form.save(**opts)
+        
+        if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({
+                'status': 'success',
+                'message': 'Password reset email has been sent.'
+            })
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        """If the form is invalid, render the invalid form."""
+        if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Please enter a valid email address.',
+                'errors': form.errors
+            }, status=400)
+        return super().form_invalid(form)

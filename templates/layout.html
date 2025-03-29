@@ -174,7 +174,7 @@
                                             <input type="checkbox" id="remember-me" name="remember-me">
                                             <label for="remember-me">Remember me</label>
                                         </div>
-                                        <a href="{% url 'account_reset_password' %}" class="forgot-password">Forgot password?</a>
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#passwordResetModal" data-bs-dismiss="modal" class="forgot-password">Forgot password?</a>
                                     </div>
                                     <button type="submit" class="sign-in-btn">Sign In</button>
                                 </form>
@@ -326,6 +326,55 @@
                                     </div>
                                     <button type="submit" class="sign-in-btn">Complete Registration</button>
                                 </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Password Reset Modal -->
+    <div class="modal fade" id="passwordResetModal" tabindex="-1" aria-labelledby="passwordResetModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <div class="login-content">
+                        <!-- Left side with purple background and welcome message -->
+                        <div class="login-welcome d-flex align-items-center justify-content-center">
+                            <div class="welcome-content">
+                                <h1>Reset Your Password</h1>
+                                <p>Enter your email address and we'll send you instructions to reset your password.</p>
+                            </div>
+                            <div class="decorative-elements">
+                                <div class="circle-1"></div>
+                                <div class="circle-2"></div>
+                                <div class="wave-line"></div>
+                            </div>
+                        </div>
+
+                        <!-- Right side with reset form -->
+                        <div class="login-form-container d-flex align-items-center justify-content-center">
+                            <div class="login-form-content text-center">
+                                <h2>Password Reset</h2>
+                                <!-- Error message container -->
+                                <div id="passwordResetErrorContainer" class="alert alert-warning d-none" role="alert">
+                                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                    <span id="passwordResetErrorMessage"></span>
+                                </div>
+
+                                <form method="POST" action="{% url 'users:password_reset' %}" class="login-form">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <i class="bi bi-envelope form-icon"></i>
+                                        <input type="email" name="email" class="form-control text-center" placeholder="Enter your email" required>
+                                    </div>
+                                    <button type="submit" class="sign-in-btn">Send Reset Link</button>
+                                </form>
+
+                                <div class="register-link">
+                                    <p>Remember your password? <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal">Sign In</a></p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -662,6 +711,119 @@
                     }
                 });
             });
+
+            // Initialize all dropdowns
+            var dropdownElementList = [].slice.call(document.querySelectorAll('[data-bs-toggle="dropdown"]'));
+            var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+                return new bootstrap.Dropdown(dropdownToggleEl);
+            });
+
+            // Handle password reset form submission
+            const passwordResetForm = document.querySelector('#passwordResetModal form');
+            if (passwordResetForm) {
+                passwordResetForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(this);
+                    const errorContainer = document.getElementById('passwordResetErrorContainer');
+                    const errorMessage = document.getElementById('passwordResetErrorMessage');
+                    const submitButton = this.querySelector('button[type="submit"]');
+                    
+                    fetch(this.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+                        }
+                    })
+                    .then(response => {
+                        if (response.redirected) {
+                            // Handle successful form submission that results in a redirect
+                            // Show success message and disable form
+                            errorContainer.className = 'alert alert-success';
+                            errorMessage.innerHTML = '<i class="bi bi-envelope me-2"></i>Check your email for password reset instructions.';
+                            errorContainer.classList.remove('d-none');
+                            
+                            // Clear form
+                            this.reset();
+                            
+                            // Disable submit button
+                            submitButton.disabled = true;
+                            submitButton.innerHTML = '<i class="bi bi-check-circle me-2"></i>Email Sent';
+                            
+                            // Show success toast
+                            const toast = document.createElement('div');
+                            toast.className = 'toast align-items-center text-white bg-success border-0';
+                            toast.setAttribute('role', 'alert');
+                            toast.setAttribute('aria-live', 'assertive');
+                            toast.setAttribute('aria-atomic', 'true');
+                            toast.innerHTML = `
+                                <div class="d-flex">
+                                    <div class="toast-body">
+                                        <i class="bi bi-envelope me-2"></i>Password reset instructions sent to your email.
+                                    </div>
+                                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                                </div>
+                            `;
+                            document.querySelector('.toast-container').appendChild(toast);
+                            const bsToast = new bootstrap.Toast(toast);
+                            bsToast.show();
+                            
+                            return Promise.reject('Redirect');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.status === 'success') {
+                            // Handle success response
+                            errorContainer.className = 'alert alert-success';
+                            errorMessage.innerHTML = '<i class="bi bi-envelope me-2"></i>Check your email for password reset instructions.';
+                            errorContainer.classList.remove('d-none');
+                            
+                            // Clear form
+                            this.reset();
+                            
+                            // Disable submit button
+                            submitButton.disabled = true;
+                            submitButton.innerHTML = '<i class="bi bi-check-circle me-2"></i>Email Sent';
+                            
+                            // Show success toast
+                            const toast = document.createElement('div');
+                            toast.className = 'toast align-items-center text-white bg-success border-0';
+                            toast.setAttribute('role', 'alert');
+                            toast.setAttribute('aria-live', 'assertive');
+                            toast.setAttribute('aria-atomic', 'true');
+                            toast.innerHTML = `
+                                <div class="d-flex">
+                                    <div class="toast-body">
+                                        <i class="bi bi-envelope me-2"></i>Password reset instructions sent to your email.
+                                    </div>
+                                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                                </div>
+                            `;
+                            document.querySelector('.toast-container').appendChild(toast);
+                            const bsToast = new bootstrap.Toast(toast);
+                            bsToast.show();
+                        } else {
+                            // Show error message
+                            errorContainer.className = 'alert alert-warning';
+                            errorMessage.innerHTML = '<i class="bi bi-exclamation-triangle-fill me-2"></i>' + (data.message || 'An error occurred. Please try again.');
+                            errorContainer.classList.remove('d-none');
+                        }
+                    })
+                    .catch(error => {
+                        if (error === 'Redirect') {
+                            // Ignore redirect "error" as it's actually a success case
+                            return;
+                        }
+                        // Show error message for actual errors
+                        errorContainer.className = 'alert alert-warning';
+                        errorMessage.innerHTML = '<i class="bi bi-exclamation-triangle-fill me-2"></i>An error occurred. Please try again.';
+                        errorContainer.classList.remove('d-none');
+                    });
+                });
+            }
         });
     </script>
 </body>
