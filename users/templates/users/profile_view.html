@@ -311,34 +311,50 @@
 
                                     <!-- Edit Review Modal -->
                                     <div class="modal fade" id="editReviewModal{{ review.id }}" tabindex="-1" aria-labelledby="editReviewModalLabel{{ review.id }}" aria-hidden="true">
-                                        <div class="modal-dialog">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg">
                                             <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="editReviewModalLabel{{ review.id }}">Edit Review for {{ review.recipe.recipename }}</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <form action="{% url 'recipes:edit_review' review_id=review.id %}" method="POST">
-                                                    {% csrf_token %}
-                                                    <div class="modal-body">
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Rating</label>
-                                                            <div class="star-rating">
-                                                                {% for i in '54321'|make_list %}
-                                                                    <input type="radio" id="star{{ i }}review{{ review.id }}" name="rating" value="{{ i }}" {% if review.rating == i|add:"0" %}checked{% endif %} required>
-                                                                    <label for="star{{ i }}review{{ review.id }}" class="star">★</label>
-                                                                {% endfor %}
+                                                <div class="modal-body p-0">
+                                                    <div class="login-content">
+                                                        <!-- Left side with purple background and welcome message -->
+                                                        <div class="login-welcome d-flex align-items-center justify-content-center">
+                                                            <div class="welcome-content">
+                                                                <h1>Edit Your Review</h1>
+                                                                <p>Update your thoughts about {{ review.recipe.recipename }}</p>
+                                                            </div>
+                                                            <div class="decorative-elements">
+                                                                <div class="circle-1"></div>
+                                                                <div class="circle-2"></div>
+                                                                <div class="wave-line"></div>
                                                             </div>
                                                         </div>
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Comment</label>
-                                                            <textarea name="comment" class="form-control" rows="3" required>{{ review.comment }}</textarea>
+
+                                                        <!-- Right side with edit form -->
+                                                        <div class="login-form-container d-flex align-items-center justify-content-center">
+                                                            <div class="login-form-content w-100">
+                                                                <form action="{% url 'recipes:edit_review' review_id=review.id %}" method="POST" class="review-form">
+                                                                    {% csrf_token %}
+                                                                    <div class="mb-4">
+                                                                        <label class="form-label fw-semibold">Rating <span class="text-muted">(required)</span></label>
+                                                                        <div class="star-rating">
+                                                                            {% for i in '54321'|make_list %}
+                                                                                <input type="radio" id="star{{ i }}review{{ review.id }}" name="rating" value="{{ i }}" {% if review.rating == i|add:"0" %}checked{% endif %} required>
+                                                                                <label for="star{{ i }}review{{ review.id }}" class="star">★</label>
+                                                                            {% endfor %}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="mb-4">
+                                                                        <label class="form-label fw-semibold">Your Review</label>
+                                                                        <textarea name="comment" class="form-control" rows="5" required>{{ review.comment }}</textarea>
+                                                                    </div>
+                                                                    <div class="d-flex justify-content-end gap-2">
+                                                                        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">CANCEL</button>
+                                                                        <button type="submit" class="btn btn-primary px-4">SAVE CHANGES</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                                                    </div>
-                                                </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
