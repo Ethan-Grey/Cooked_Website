@@ -16,7 +16,7 @@ class Recipe(models.Model):
     recipename = models.CharField(max_length=200, unique=True)
     description = models.TextField()
     ingredients = models.TextField()
-    instructions = models.TextField(default='No instructions provided')
+    instructions = models.TextField()
     prep_time = models.IntegerField(help_text="Preparation time in minutes", default=0)
     cook_time = models.IntegerField(help_text="Cooking time in minutes", default=0)
     servings = models.IntegerField(help_text="Number of servings", default=1)
