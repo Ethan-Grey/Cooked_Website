@@ -11,6 +11,14 @@ Cooked is a full-featured recipe sharing platform that allows users to:
 - Interact with other food enthusiasts
 - Discover new recipes through various categories and filters
 
+## Depndencie
+- Django==5.1.7
+- django-allauth==0.61.1
+- django-crispy-forms==2.1
+- crispy-bootstrap5==2024.2 
+- python-dotenv==1.0.1
+- Pillow 
+
 ## Features
 
 ### Recipe Management
